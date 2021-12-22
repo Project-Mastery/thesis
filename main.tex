@@ -1,0 +1,230 @@
+\documentclass[twoside, 11pt]{article}
+
+\usepackage{ipcb}
+
+\begin{document}
+
+\input{title.tex} 
+%\blankpage
+
+\mainmatter
+
+
+
+\section{Introdução}
+
+%{\LARGE Este projete ainda está em desenvolvimento e a documentação está incompleta!}
+
+Está é um modelo de documento \LaTeX \space que segue as regras de formatação 
+para trabalhos finais de graduação, teses de mestrado e relatórios de estágio do 
+Instituto Politécnico de Castelo Branco (IPCB). 
+Este projeto foi feito para seguir os padrões de 2021.
+Antes de usar, verifique se as normas foram alteradas!
+Os documentos contendo as normas atuais de entrega para cada uma das
+escolas do IPCB estão na pasta \texttt{rules} deste projeto. 
+As tabelas \ref{tab:element_styles} e \ref{tab:margins} contem um resumo das normas mais importantes.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Elemento            & Fonte     & Tamanho               & Alinhamento   & Cor       & Estilo\\
+        \hline
+        Título trabalho     & Trebuchet   & 18 pt               & Esquerda      & Padrão    & Negrito\\
+        Subtítulo trabalho  & Trebuchet   & 14 pt               & Esquerda      & Padrão    & Negrito\\
+        Numeração da página & Cambria   & 11 pt                 & Centro        & [89,89,89]&\\  
+        Cabeçalho par       & Trebuchet & 7 pt                  & Esquerda      & [89,89,89]&\\
+        Cabeçalho impar     & Trebuchet & 7 pt                  & Direita       & [89,89,89]& Negrito\\ 
+        Corpo               & Cambria   & 10–12 pt              & Justificado   & Padrão    &\\
+        Títulos de capítulo & Trebuchet & 14–16 pt              & Esquerda      & Padrão    & Negrito\\
+        Subtítulos          & Trebuchet & 12–14 pt\footnotemark & Esquerda      & Padrão    & Negrito\\
+        Subsubtítulos       & Trebuchet & 10–12 pt\footnotemark & Esquerda      & Padrão    & Negrito\\
+        Legendas (Lable)    & Trebuchet & 8–10 pt               & Centro        & Padrão    & Negrito\\
+        Legendas (Corpo)    & Trebuchet & 8–10 pt               & Centro        & Padrão    &\\
+        \hline
+    \end{tabular}
+    \caption{Tamanhos e formatação dos elementos indicados pelas normas do IPCB.}
+    \label{tab:element_styles}
+\end{table}
+
+\footnotetext[1]{Sempre 2pt a menos que o tamanho do título}
+\footnotetext[2]{Sempre 2pt a menos que o tamanho do subtítulo}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        Margem & Tamanho\\
+        \hline
+        Superior & 3 cm\\
+        Inferior & 2 cm\\
+        Interna  & 3 cm\\
+        Externa  & 2,5 cm\\
+        \hline
+    \end{tabular}
+    \caption{Tamanhos das margens}
+    \label{tab:margins}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        Funcionalidade & Estado \\
+        \hline
+        \multicolumn{2}{|l|}{Geral}\\
+        \hline
+        Margens & \ding{51}\\
+        Cabeçalhos & \ding{51}\\
+        \hline
+        \multicolumn{2}{|l|}{Formatação de texto}\\
+        \hline
+        Formatação de títulos & \ding{51}\\
+        Formatação de texto & \ding{51}\\
+        Formatação de legendas  & \ding{51}\\
+        \hline
+        \multicolumn{2}{|l|}{Páginas especiais}\\
+        \hline
+        Página de capa  & \ding{51}\\
+        Página de agradecimentos & \ding{53}\\
+        Página  de índice  & \ding{53}\\
+        \hline
+        \multicolumn{2}{|l|}{Manual de uso}\\
+        \hline
+        VSCode  & \ding{53}\\
+        Overleaf  & \ding{53}\\
+        \hline
+        \multicolumn{2}{|l|}{Exemplos}\\
+        \hline
+        Imagens  & \ding{51}\\
+        Tabelas  & \ding{53}\\
+        Código  & \ding{51}\\
+        \hline
+    \end{tabular}
+    \caption{Estado do projeto}
+    \label{tab:features}
+\end{table}
+
+\subsection{Estrutura do projeto}
+
+\dirtree{%
+.1 IPCB-LaTeX.
+.2 .vscode — Configuração do projeto para o VSCode.
+.2 fonts — Fontes não disponíveis por padrão no \LaTeX.
+.2 img — Imagens.
+.2 out — Documentos de saida.
+.2 rules — Regras de formatação.
+.2 ipcb.sty — Documento contendo a formatação compatível com as normas do IPCB.
+.2 main.tex — Arquivo principal.
+}
+
+\section{Manual de uso}
+
+\subsection{VSCode}
+
+\begin{enumerate}
+    \item Instalar o VSCode
+    \item Instalar o TeX Live
+    \item Instalar extensões necessárias
+    \item Instalar extensões recomendadas
+\end{enumerate}
+
+\subsection{Overleaf}
+
+\begin{enumerate}
+    \item Importar modelo
+\end{enumerate}
+
+\section{Dependências}
+
+Se você está usando o Overleaf ou baixou a versão completa do TeX Live, 
+você já deve ter todos os pacotes sendo usados. Caso contrário, garanta que os seguintes 
+pacotes estejam instalados para que esse modelo funcione adequadamente:
+
+\begin{itemize}
+    \item fontspec
+    \item inputenc
+    \item graphicx
+    \item geometry
+    \item blindtext
+    \item ragged2e
+    \item afterpage
+    \item fancyhdr
+    \item xcolor
+    \item titlesec
+    \item indentfirst
+    \item dirtree
+    \item babel (e o pacote de lingas apropriado)
+  \end{itemize}
+
+\section{Exemplos}
+
+Esta secção cotem exemplos de como usar certas funcionalidades do \LaTeX \space.
+Para ver o código que está gerando esses exemplos, abra o aquivo \texttt{main.tex}.
+Em caso de dúvida, vale apena procurar outros exemplos na documentação do Overleaf.
+
+\subsection{Imagens}
+
+
+
+
+Este modelo inclui configurações para automaticamente procurar imagens na pasta \texttt{img}.
+Por conta disso, imagens nessa pasta podem ser acessadas usando somente seu nome. 
+Abaixo seguem alguns exemplos de inserção de imagem:
+
+
+
+\begin{figure}[ht]
+    \includegraphics{est.png}
+    \caption{Imagem simples}
+\end{figure}
+
+\begin{figure}[ht]
+    \includegraphics[center]{est.png}
+    \caption{Imagem centralizada}
+\end{figure}
+
+\begin{figure}[ht]
+    \includegraphics[width=1cm,center]{est.png}
+    \caption{Imagem centralizada com tamanho pré-definido (1cm)}
+\end{figure}
+
+\begin{figure}[ht]
+    \includegraphics[width=\textwidth]{est.png}
+    \caption{Imagem com tamanho máximo}
+\end{figure}
+
+\subsection{Tabelas}
+\subsection{Código}
+
+As normas do IPCB não especificam como código deve ser formatado no relatório. 
+Aqui segue um exemplo, mas á válido ressaltar que você deve consultar seus coordenadores de projeto
+ou o departamento apropriado para esclarecer essas questões. 
+
+\begin{lstlisting}[language=Python, caption=Exemplo de uso de código]
+    def add(x,y):
+        return x + y
+\end{lstlisting}
+
+\subsection{Citações}
+
+As margens do documento deverão respeitar as seguintes medidas: superior 3 cm, inferior 2 cm, interior 3 cm, exterior 2,5 cm.
+
+A numeração deverá constar em rodapé, com um corpo de 11 alinhado ao centro. [Cor RGB 89, 89, 89] (Aplicar estilo “Numeração”) 
+
+No cabeçalho das páginas pares deverá constar o nome do autor, em corpo 7, regular alinhado à esquerda. [Cor RGB 89, 89, 89] (Aplicar estilo “Nome do autor”)
+
+No cabeçalho das páginas ímpares deverá constar o nome do trabalho de mestrado em corpo 7, bold, alinhado à direita. [Cor RGB 89, 89, 89] (Aplicar estilo “Nome do trabalho”)
+
+O corpo do texto será apresentado em frente-verso, fonte “Cambria” com dimensão de 10 a 12 pontos e entrelinha de 1.15 linhas. Deverá ainda ter um alinhamento justificado e ter um avanço à primeira linha de 0,6 cm, e um espaçamento depois do parágrafo de 6 pontos. (Aplicar estilo “Normal”)
+
+Os títulos de capítulos deverão ter um corpo de 14 a 16 pontos na fonte “Trebuchet MS” em negrito, sem avanço à primeira linha. (Aplicar estilo “Títulos”)
+
+Todos os subtítulos deverão ter um corpo dois pontos abaixo dos títulos em negrito, sem avanço à primeira linha e constar na fonte “Trebuchet MS”. (Aplicar estilo “subtítulos”)
+
+Os subsubtítulos deverão ter um corpo dois pontos abaixo dos subtítulos em negrito, sem avanço à primeira linha e constar na fonte “Trebuchet MS”. (Aplicar estilo “subsubtítulos”)
+
+As legendas deverão ter um corpo de 8 a 10 pontos na fonte “Trebuchet MS”, com a informação do número da legenda em negrito e o resto do texto em regular. (Aplicar estilo “Legendas”)
+
+
+\end{document}

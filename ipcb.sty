@@ -1,0 +1,159 @@
+% Packages
+
+\RequirePackage{fontspec}
+    \newfontfamily\trebuc{trebuc}[
+        Path            =   ./fonts/trebuc/,
+        Extension       =   .ttf,
+        UprightFont     =   *-Regular,
+        BoldFont        =   *-Bold,
+        ItalicFont      =   *-Italic,
+        BoldItalicFont  =   *-BoldItalic
+    ] 
+
+    \newfontfamily\cambria{cambria}[
+        Path            =   ./fonts/cambria/,
+        Extension       =   .ttf,
+        UprightFont     =   *-Regular,
+        BoldFont        =   *-Bold,
+        ItalicFont      =   *-Italic,
+        BoldItalicFont  =   *-BoldItalic
+    ] 
+
+    \setmainfont{cambria}[
+        Path            =   ./fonts/cambria/,
+        Extension       =   .ttf,
+        UprightFont     =   *-Regular,
+        BoldFont        =   *-Bold,
+        ItalicFont      =   *-Italic,
+        BoldItalicFont  =   *-BoldItalic
+    ]
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+    \graphicspath{ {./img/} }
+
+\usepackage{geometry}
+    \geometry{
+        a4paper,
+        top=3cm,
+        bottom=2cm,
+        inner=3cm,
+        outer=2.5cm
+    }
+
+%\usepackage{showframe}
+
+\usepackage{blindtext}
+\usepackage{ragged2e}
+\usepackage{afterpage}
+
+\usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhf{}
+    \setlength{\headheight}{13.6pt}
+    \addtolength{\topmargin}{-1.6pt}
+
+    \let\oldheadrule\headrule
+    \renewcommand{\headrule}{\color{gray}\oldheadrule}
+
+    \let\oldheadrulewidth\headrulewidth
+    \renewcommand{\headrulewidth}{0pt}
+
+    \cfoot{\pagenumber{\thepage}}
+    \pagenumbering{Roman}
+
+\usepackage{xcolor}
+    \definecolor{gay}{RGB}{89, 89, 89}
+
+
+\usepackage{titlesec}
+    \titleformat{\section}
+    [hang]
+    {\bfseries\Large\trebuc}
+    {\thesection.}{10pt}{}
+
+    \titleformat{\subsection}
+    [hang]
+    {\bfseries\large\trebuc}
+    {\thesubsection }{10pt}{}
+
+    \titleformat{\subsubsection}
+    [hang]
+    {\bfseries\small\trebuc}
+    {\thesubsubsection }{10pt}{}
+
+\usepackage[font=small, labelfont=bf, labelsep=endash]{caption}
+
+\usepackage{indentfirst}
+\usepackage{dirtree}
+\usepackage[brazilian]{babel}
+\usepackage[export]{adjustbox}
+\usepackage{listings}
+    \renewcommand{\lstlistingname}{Código}
+    \lstset{ 
+        captionpos=b                    % sets the caption-position to bottom
+    }
+
+\usepackage{pifont}
+
+% Paragraph formatting
+
+\setlength{\parindent}{4em}
+\setlength{\parskip}{6pt}
+\renewcommand{\baselinestretch}{1.15}
+
+% Commands
+
+\newcommand{\mainmatter}{
+    \setlength{\parindent}{0.6cm}
+    \fancyhead[LE]{\authorheader{Autor}}
+    \fancyhead[RO]{\titleheader{Nome do trabalho}}
+    \renewcommand{\headrulewidth}{\oldheadrulewidth}
+    \pagenumbering{arabic}
+}
+
+\newcommand\blankpage{
+    \afterpage{
+        \null
+        %\thispagestyle{empty}
+        \newpage
+    }
+    \pagebreak
+}
+
+\renewcommand{\title}[1]{
+    \noindent\textbf{\LARGE\trebuc{#1}}
+    
+}
+
+\newcommand{\subtitle}[1]{
+    \noindent\textbf{\Large\trebuc{#1}}
+}
+
+\newcommand{\info}[1]{
+    \noindent\large{#1}
+}
+
+\newcommand{\notice}[1]{
+    \noindent\small{#1}
+}
+
+\newcommand{\titledate}[1]{
+    \centering
+
+    \textbf{\large{#1}}
+
+    \justifying
+}
+
+\newcommand{\authorheader}[1]{
+    \textcolor{gray}{\scriptsize\trebuc{#1}}
+}
+
+\newcommand{\titleheader}[1]{
+    \textcolor{gray}{\textbf{\scriptsize\trebuc{#1}}}
+}
+
+\newcommand{\pagenumber}[1]{
+    \textcolor{gray}{\normalsize{#1}}
+}
