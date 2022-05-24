@@ -93,7 +93,7 @@
             "env": {}
         }
     ],
-    "ltex.language": "pt",
+    "ltex.language": "pt-PT",
     "ltex.enabled": true,
     "spellright.documentTypes": [
         "markdown",
