@@ -1,6 +1,0 @@
-{"rule":"PT_BARBARISMS_REPLACE","sentence":"^\\QInstalar o VSCode Instalar o TeX Live Instalar extensões necessárias Instalar extensões recomendadas\\E$"}
-{"rule":"PT_BARBARISMS_REPLACE","sentence":"^\\QSe você está usando o Overleaf ou baixou a versão completa do TeX Live,\\E$"}
-{"rule":"PT_BARBARISMS_REPLACE","sentence":"^\\QSe você está usando o Overleaf ou baixou a versão completa do TeX Live, você já deve ter todos os pacotes sendo usados\\E$"}
-{"rule":"GENERAL_NUMBER_AGREEMENT_ERRORS","sentence":"^\\QPágina de agradecimentos Feito\\E$"}
-{"rule":"GENERAL_NUMBER_AGREEMENT_ERRORS","sentence":"^\\QFuncionalidade Estado Geral Margens 51 Formatação de texto Formatação de títulos 51 Formatação de texto 51 Formatação de legendas 51 Páginas especiais Página de capa 51 Página de agradecimentos 53 Página de índice 53 Estado do projeto\\E$"}
-{"rule":"GENERAL_NUMBER_AGREEMENT_ERRORS","sentence":"^\\QFuncionalidade Estado Geral Margens 51 Formatação de texto Formatação de títulos 51 Formatação de texto 51 Formatação de legendas 51 Páginas especiais Página de capa 51 Página de agradecimentos 53 Página de índice 53 Exemplos Estado do projeto\\E$"}

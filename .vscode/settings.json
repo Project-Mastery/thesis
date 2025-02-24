@@ -93,15 +93,16 @@
             "env": {}
         }
     ],
-    "ltex.language": "pt-PT",
-    "ltex.enabled": true,
-    "spellright.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext"
-    ],
-    "spellright.language": [
-        "pt_BR"
-    ]
+    "ltex.language": "en-US",
+    "latex-workshop.view.pdf.invert": 1,
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.currentLine.details": false,
+    "gitlens.hovers.currentLine.changes": false,
+    "gitlens.currentLine.format": "",
+    "gitlens.currentLine.scrollable": false,
+    "gitlens.hovers.currentLine.enabled": false,
+    "gitlens.currentLine.pullRequests.enabled": false,
+    "ltex.additionalRules.motherTongue": "en",
+    "ltex.trace.server": "verbose",
 
 }
