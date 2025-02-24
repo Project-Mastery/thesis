@@ -1,13 +1,16 @@
 \documentclass[twoside, 11pt]{article}
 
-\usepackage{ipcb}
+\usepackage{meta/ipcb}
 
 \begin{document}
 
 \input{title.tex} 
-%\blankpage
-\newpage
+% \blankpage
+% \newpage
 
+% \printglossary[type=\acronymtype,nonumberlist, title=List of Abbreviations]
+
+\newpage
 
 \mainmatter
 
@@ -32,7 +35,7 @@ When these models are implemented, it is often done on top of an exiting simulat
 
 [NOTE: There is plenty missing here. Maybe I need to give a bit more of a justification for why I believe this new simulator has merit]
 
-With this in mind, I propose a new simulator for pedestrian dynamics: ECSMoS, Entity Component Systems Mobility Simulator. This simulator is based on the Entity Component Systems (ECS) architecture and has the objective of being as flexible as possible for model authors and implementers while maintaining a good performance.
+With this in mind, I propose a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has the objective of being as flexible as possible for model authors and implementers while maintaining a good performance.
 
 [NOTE:...]
 
