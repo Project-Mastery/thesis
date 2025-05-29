@@ -28,7 +28,7 @@ When these models are implemented, it is often done on top of an exiting simulat
 
 Similarly, the architecture and technologies used by the simulator have a performance impact on the simulation. While less impactful than full incompatibility between model and simulator, low performance can significantly slow model development and usage. Larger or more complicated sceneries may take much longer than desired to be evaluated or required additional hardware.
 
-While there are many ways of mitigating such problems, using architectures found in other areas such as \gls{ecs} offer some benefits. \gls{ecs} is a software architecture commonly used in game development due to their much stricter performance requirement than standard simulators. Users and developers expect such frameworks to be able to handle thousands of entities updating multiple times a second, allowing them to deliver frame rates of upwards of 60 frames per second. Not only that, but, as this work will show, this paradigm is very flexible, allowing it to be used into many scenarios, including the study of crowds. Despite this, \gls{ecs} is still very uncommon in the scientific world.
+While there are many ways of mitigating such problems, using architectures found in other areas such as \gls{ecs} offer some benefits. \gls{ecs} is a software architecture sometimes used in game development due to their much stricter performance requirement than standard simulators. Users and developers expect such frameworks to be able to handle thousands of entities updating multiple times a second, allowing them to deliver frame rates of upwards of 60 frames per second. Not only that, but, as this work will show, this paradigm is very flexible, allowing it to be used into many scenarios, including the study of crowds. Despite this, \gls{ecs} is still very uncommon in the scientific world.
 
 With this in mind, I propose a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has the objective of being as flexible as possible for model authors and implementers while maintaining a high performance.
 
@@ -100,9 +100,14 @@ where:
   \item[$A$, $B$, $k$, \kappa] are calibration constants
 \end{description}
 
-In practical terms, the repulsive force has two main components: a normal and a perpendicular vector. The normal forces two pedestrians away from each other, increasing depending on how close they are. If the pedestrians are close enough to touch, that force additionally increases by a secondary factor that is dependent on how much they intersect. In this way, the normal component captures both the psychological desire for space and the physical constraints preventing pedestrians from packing too tightly. The perpendicular vector represents sliding forces. When two pedestrians touch, there is some friction between them that acts to slow them down. Friction acts perpendicularly to the normal and against the direction of movement.
+In practical terms, the repulsive force has two main components: a normal and a perpendicular vector. The normal forces two pedestrians away from each other, increasing depending on how close they are. If the pedestrians are close enough to touch, that force additionally increases by a secondary factor that is dependent on how much they intersect. In this way, the normal component captures both the psychological desire for space and the physical constraints preventing pedestrians from packing too tightly. The perpendicular vector represents sliding forces. When two pedestrians touch, there is some friction between them that acts to slow them down. Friction acts perpendicularly to the normal and against the direction of movement. These forces can be seen on \autoref{fig:repulsive-forces}
 
-[Put example images]
+\begin{figure}[h]
+  \centering
+  \includesvg{repulsive_forces.drawio.svg}
+  \caption{Diagram of repulsive forces between pedestrians $i$ and $j$}
+  \label{fig:repulsive-forces}
+\end{figure}
 
 The final class of force to consider is the obstacle force. Much like the previous repulsive forces, agents also attempt to keep a certain distance from them to walls and other obstacles in their surroundings. If they touch those objects, there is also an additional factor that increases the normal repulsion and a factor describing friction. However, most obstacles are not perfect circles, so the function uses the closes point of the obstacle for distance measurements.
 
@@ -183,22 +188,24 @@ To determine which simulators were most used and relevant to this work, a survey
 
 \section{\gls{ecs} architecture}
 
-Despite its general use in game development, the \gls{ecs} architecture has a loose definition and is sometimes confused with other similar software architectures that are also common in the area. Additionally, the various implementations can be substantially different due to their underlying technologies and objectives. Because of to this, some may not have most of the benefits associated with it, effectively making them simply code organizational strategies. This section will discuss the more common aspects.
+The \gls{ecs} architecture is a design pattern or framework sometimes used in the game development industry due to its flexibility and high performance. However, it is hard to find concrete numbers when it comes to its use as most games are closed source and their inner workings are not widely discussed. It also has a loose definition and is sometimes confused with other similar software architectures that are also common in the area, most notably \gls{ec}. Additionally, the various implementations can be substantially different due to their underlying technologies and objectives. Finally, there are few academic sources for this topic [this needs more research!], most works on this subject are blogs, videos and personal anecdotes. Because of these factor, this section will discuss the more common aspects of the architecture with details of the specific implementation used for \gls{ecsmos} discussed in \ref{chosen_tech}.
 
-Generally speaking, in a \gls{ecs} implementation, most things is divided into three main kinds of concepts: entities, components and systems. Entities represent general objects in the world. For example, in a crowd simulation, each pedestrian would be an entity, but so would obstacles and other things that might affect them. Usually, they consist of a simple identifier which can be used to group other kinds of data.
+Generally speaking, in a \gls{ecs} implementation, most things is divided into three main kinds of concepts: entities, components and systems. Entities represent general objects in the world. For example, in a crowd simulation, each pedestrian would be an entity, but so would obstacles and other things that might affect them. Usually, they consist of a simple identifier which can be used to group other kinds of data. Entities usually do not carry additional data, but many implementations allow entities to be "disabled", meaning that they are not used/visible to other parts of the architecture.
 
-Components can be considered the attributes of an entity. Each component stores the data relevant for a certain aspect of an entity's behaviors. Following the previous example, each pedestrian would have a position component and a speed component, each of which contains all the data necessary to characterize the entity on the relevant aspect. Entities may have as many components as necessary to describe their behavior. However, components do not contain logic. Their job is to store values.
+Components can be considered the attributes of entities. Each component is associated with only one entity and stores the data relevant for a certain aspect of its behavior. Following the previous example, each pedestrian would have a position component and a speed component, each of which contains all the data necessary to characterize the entity on the relevant aspect. Entities may have as many components as necessary to describe their behavior. However, components do not contain logic. Some components do not store data within them, their presence is already the data itself. For example, an entity that is a pedestrian may have an empty \verb|Pedestrian| component, which serves as only a marker or tag for filtering.
 
-Systems are processes that can read and modify components. They are the main place for logic in this architecture and generally speaking can access all data as though it was global. A simple system might move entities to their next position according to their speed component. More complicated one can simulate physics, UI, user interactions and much more. Systems operate in a defined sequence and usually don't have internal state, however this varies across implementations. Still, most of the data will be stored in the components.
+Systems are processes that can read and modify components. They are the main place for logic in this architecture and generally speaking can access all data as though it was global. A simple system might move entities to their next position according to their speed component. More complicated ones can simulate physics, UI, user interactions and much more. Systems are usually capable of filtering the entities that they want to read data from or operate on by using the presence or absence of certain components. More granular filtering depending on the values inside the components is also possible, but is usually done manually by the developer while rougher filtering is done by the framework itself.
 
-[Example image]
+\begin{figure}[h]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{ecs_basic_example.drawio.svg}
+  \caption{[This needs a caption][This diagram is being distorted by \LaTeX, some text should be larger but is being reduced]}
+  \label{fig:ecs_basic_example}
+\end{figure}
 
 Another way of understanding is to compare these concepts to a traditional relational database. In this paradigm, there is a table that contains all entities and one additional table for each component type. A system then would perform queries for the data in database. The entity table can be used for joining data from different component tables and the presence or absence of each component can be used to filter out certain entities. In this way, systems can perform operations only on entities which are relevant to the systems function. A system may also write back to the database and following systems can access the newly written data.
 
 [Example image]
-
-
-
 
 [Benefits]
 
@@ -206,7 +213,7 @@ Another way of understanding is to compare these concepts to a traditional relat
 
 \section{ECSMoS implementation}
 
-\subsection{Chosen Technologies}
+\subsection{Chosen Technologies} \label{chosen_tech}
 
 \begin{itemize}
   \item Rust

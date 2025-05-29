@@ -16,6 +16,7 @@
       nativeBuildInputs = with pkgs; [
         texliveFull
         tex-fmt
+        inkscape
       ];
     };
   };

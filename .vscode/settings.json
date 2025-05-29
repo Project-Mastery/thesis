@@ -6,6 +6,7 @@
             "name": "latexmk",
             "command": "latexmk",
             "args": [
+                "-shell-escape",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -23,6 +24,7 @@
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-lualatex",
+                "-shell-escape",
                 "-outdir=%OUTDIR%",
                 "%DOC%"
             ],
@@ -43,6 +45,7 @@
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
+                "-shell-escape",
                 "%DOC%"
             ],
             "env": {}
@@ -104,5 +107,9 @@
     "gitlens.currentLine.pullRequests.enabled": false,
     "ltex.additionalRules.motherTongue": "en",
     "ltex.trace.server": "verbose",
+    "files.exclude": {
+        "out/": true
+    },
+    "editor.wordWrap": "on",
 
 }
