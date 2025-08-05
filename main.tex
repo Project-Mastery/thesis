@@ -5,12 +5,11 @@
 \begin{document}
 
 \input{title.tex} 
-% \blankpage
-% \newpage
+\blankpage
+\newpage
 
-% \printglossary[type=\acronymtype,nonumberlist, title=List of Abbreviations]
-
-% \newpage
+\printglossary[type=\acronymtype,nonumberlist, title=List of Abbreviations]
+\newpage
 
 \mainmatter
 
@@ -132,8 +131,12 @@ where:
   \item[$A$, $B$, $k$, \kappa] are calibration constants
 \end{description}
 
-
-[Put example images]
+\begin{figure}[h]
+  \centering
+  \includesvg{obstacle_forces.drawio.svg}
+  \caption{Diagram of obstacle forces between pedestrian $i$ and obstacle $o$}
+  \label{fig:obstacle-forces}
+\end{figure}
 
 In each simulation step, all of these forces are computed for each agent, then they are used to compute its new speed and position. Using basic Newtonian physics, equations \eqref{eq:pedestrian_final_speed} and \eqref{eq:pedestrian_final_position} can be derived. Once the agents are moved to their new locations, the simulation forces are calculated once again. This process repeats until the desired results are achieved.
 
@@ -161,8 +164,6 @@ where:
 
 Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in imperial studies. For example, it replicates the "Faster-Is-Slower Effect", which happens when the flow rate of pedestrians though an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space [SRC].
 
-[Put example images]
-
 \subsection{Existing simulation frameworks}
 
 [This needs a better "warm-up" before just going into the text itself]
@@ -171,18 +172,23 @@ While there are many commercial products for simulating the behavior of pedestri
 
 To determine which simulators were most used and relevant to this work, a survey was performed. Various scientific article databases were searched with terms relevant to this area of study and the simulations frameworks used were noted. A substantial portion of the works used custom-made software for the specific use case the researchers had in mind. Of the general simulation frameworks found, only open source ones with at least one update since 2015 were considered. This last requirement is to guarantee that the evaluated simulators are either in active development or occasionally receive additional updates.
 
-\begin{itemize}
-  \item Vadere
-  \item Menge
-  \item JuPedSim
-  \item SUMO (Only needs to be mentioned, is not robust enough for this use case to be used in the comparison)
-  \item MomenTUMv2 (needs to mentioned at least, possibly be part of the comparison)
-  \item FDS+Evac (Only needs to be mentioned, is not used for general simulations, mostly fire escape)
-  \item Cromosim?
-  \item jCrowdSimulator?
-  \item Mesa (only needs to be mentioned, it is more of an agent-based simulation library and does not include any specific to pedestrian simulations)
-  \item Agents.jl (only needs to be mentioned, it is more of an agent-based simulation library and does not include any specific to pedestrian simulations)
-\end{itemize}
+\textbf{Cromosim} is a Python library for crowd simulations \cite{cromosim}. While it benefits from Python's large ecosystem of scientific tool, Cromosim has little pre-built infrastructure when it comes to helping researches. Even basic models such as the social forces model are not already included.
+
+\textbf{FDS+Evac} is a module for \gls{fds} developed by Technical Research Center Of Finland for the purposes of simulating pedestrian moment in building fire scenarios \cite{korhonenFireDynamicsSimulator2009}. It is agent-based, uses the social forces model and is mostly suited for evacuation scenarios on buildings with relatively flat floor plans. Buildings with a large degree of vertical movement withing a single floor (stadiums, concert halls and cinemas for example), may present some challenges. However, this module has been discontinued as of version 6.7.8 of \gls{fds}.
+
+\textbf{jCrowdSimulator} is a pedestrian simulator written in Java and maintained by the Fraunhofer Institute for Transport and Infrastructure Systems \cite{meinert2019simulation}. It can be used in the form of a library or as a stand-alone application. Currently, it only implements the social forces model and its implementation is tightly coupled to that rest of the simulator, meaning that adding new models can be a challenge.
+
+\textbf{JuPedSim} is a Python package with a C++ core for simulating pedestrian dynamics. Despite not having a \gls{ui} \cite{kemlohwagoumJuPedSimOpenFramework2015}, JuPedSim is simple to use. It also includes various modules for flow/density analysis, image generation, 2D or 3D animations, reporting and geometry generation. Model implementation is divided into three levels. (1) Tactical: route choice and short term decisions. (2) Strategic: Long term decisions and general objectives. (3) Operational: How to perform each action. JuPedSim can be executed inside Jupyter Notebooks for a more interact experience.
+
+\textbf{Menge} is a modular framework for simulating crowd movement that decomposes the problem of how to simulate human movement into four main tasks \cite{curtisMengeModularFramework2016}. (1) Goal selection: Deciding what each pedestrian wants to achive. (2) Plan computation: Deciding on a strategy to achieve a pedestrians objective. (3) Plan adaptation: Adapt the original plan to the current local environment of the pedestrian. (4) Spacial queries: How to retrieve data around a certain point and deciding what kinds of data are useful. To add a new model to the simulator, it is necessary to break it down into these four components while also obeying the other interface restrictions. If the new model is similar enough to another in one of these areas, it is possible to reuse that part of the implementation. Menge includes a \gls{ui} and various examples of its basic features.
+
+\textbf{MomenTUMv2} is a microscopic agent-based pedestrian simulator written in Java and developed by the Technical University of Munich \cite{kielarMomenTUMv2ModularExtensible2016}. Most of its inner workings are implemented in the form of models, which are thought of as "operation providers". These are implementations of the Strategy and Template Method software patterns. This modularity is very broad, including configuration, pedestrians generators/removers, analyzers and much more. Models that do not fit into any pre-defined category can be added in a special section. When compared to other solutions such as Vadere, it is much more adaptable, but it comes with a cost in terms of complexity and implementation time. One of its main benefits is that it allows for the use of hybrid models, meaning models that connect two or more pre-existing models of the same layer to create behavior that is a mixture of them depending on the circumstances.
+
+\textbf{\gls{sumo}} is a traffic simulator widely used in traffic engineering and related topics \cite{SUMO2018}. While it is mostly focused on vehicular movement, it does have some built-in mechanism to simulate pedestrian movement. However, these were built with the purpose of enriching the traffic simulations and are very limited. For example, pedestrians are not allowed to freely roam in the 2D plane, instead they are restricted to certain lines/paths. For more robust simulation capabilities, it is possible to use JuPedSim toughener with \gls{sumo}, however this integration is still work in progress.
+
+\textbf{Vadere} is a situation framework for comparing different locomotion model developed by the Munich University of Applied Sciences \cite{kleinmeierVadereOpenSourceSimulation2019}. It was designed to be lightweight, but while still reframing relatively flexible. It contains both a simulation engine that can be executed via command line or via its own \gls{ui}. Vadere following the \gls{mvc} architecture where the \gls{ui} serves as the view, the state is the model and the simulator core is the controller. Inside the simulation core, models are not implemented following any specific division of responsibilities like those seen in other simulators. Instead, it uses a more integrated approach. However, Vadere was designed to use a mechanism called floor fields to compute the paths of pedestrians. While this implementation has its benefits \cite{seitzSuperpositionPrincipleConceptual2016}, it imposes a performance drop on cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}.
+
+Finally, there are other libraries such as \textbf{Mesa} \cite{hoevenMesa3Agentbased2025}, \textbf{Agents.jl} \cite{Agents.jl} and many others, which focus on agent based modeling. While these can be used for pedestrians simulations, they have little to no pre-built infrastructure for model authors, requiring a full implementation to be done for any comparison. However, due to their larger audience, they may have better tools for analysis and documentation that other purpose built simulators.
 
 [At the end of this section, I need to give "a list o problems" that these simulators have so that the architecture section can have some context. At the end of that section, I can raise some points on how this architecture could solve them]
 
@@ -192,12 +198,12 @@ The \gls{ecs} architecture is a data-oriented design pattern or framework someti
 
 \subsection{General structure}
 
-Generally speaking, in a \gls{ecs} implementation, most things is divided into three main kinds of concepts: entities, components and systems. Entities represent general objects in the world. For example, in a crowd simulation, each pedestrian would be an entity, but so would obstacles and other things that might affect them. Usually, they consist of a simple identifier which can be used to group other kinds of data. \textbf{Entities} usually do not carry additional data, but many implementations allow entities to be "disabled", meaning that they are not used/visible to other parts of the architecture.
+Generally speaking, in a \gls{ecs} implementation, most things is divided into three main kinds of concepts: entities, components and systems. \textbf{Entities} represent general objects in the world. For example, in a crowd simulation, each pedestrian would be an entity, but so would obstacles and other things that might affect them. Usually, they consist of a simple identifier which can be used to group other kinds of data. Entities usually do not carry additional data, but many implementations allow entities to be "disabled", meaning that they are not used/visible to other parts of the architecture.
 
 
-\textbf{Components} can be considered the attributes of entities. Each component is associated with only one entity and stores the data relevant for a certain aspect of its behavior. In most implementations, each entity mal also only have one component of each type associated with it. Following the previous example, each pedestrian would have a position component and a speed component, each of which contains all the data necessary to characterize the entity on the relevant aspect. Entities may have as many components as necessary to describe their behavior. However, components do not contain logic. Some components do not store data within them, their presence is already the data itself. For example, an entity that is a pedestrian may have an empty \verb|Pedestrian| component, which serves as only a marker or tag for filtering.
+\textbf{Components} can be considered the attributes of entities. Each component is associated with only one entity and stores the data relevant for a certain aspect of its behavior. In most implementations, each entity may also only have one component of each type associated with it. Following the previous example, each pedestrian would have a position component and a speed component, each of which contains all the data necessary to characterize the entity on the relevant aspect. Entities may have as many components as necessary to describe their behavior. However, components do not contain logic. On the other hand, some components also do not store data within them, their presence is already the data itself. For example, an entity that is a pedestrian may have an empty \verb|Pedestrian| component, which serves as only a marker or tag for filtering.
 
-\textbf{Systems} are processes that can read and modify components. They are the main place for logic in this architecture, they usually have a well-defined singular purpose and can access all data as though it was global. For example, a simple system might move entities to their next position according to their speed component. Systems are executed in a pre-defined order that may be specifically determined by the developer or derived by some set of rules. Once all systems have been executed, the cycle is started one more from the first system, creating a loop. Systems are also usually capable of filtering the entities that they want to read data from or operate on by using the presence or absence of certain components.
+\textbf{Systems} are processes that can read and modify components. They are the main place for logic in this architecture, they usually have a well-defined singular purpose and can access all data as though it was global. For example, a simple system might move entities to their next position according to their speed component. Systems are executed in a pre-defined order that may be specifically determined by the developer or derived by some set of rules. Once all systems have been executed, the cycle is started once more from the first system, creating a loop. Systems are also usually capable of filtering the entities that they want to read data from or operate on by using the presence or absence of certain components.
 
 \begin{figure}
   \centering
@@ -206,7 +212,7 @@ Generally speaking, in a \gls{ecs} implementation, most things is divided into t
   \label{fig:ecs_basic_example}
 \end{figure}
 
-Another way of understanding is to compare these concepts to a relational database. In this paradigm, each component type has its own table and uses the entity it is associated with as primary key. A system then would perform queries for the data in database. The entity information can be used for joining data from different component tables and the presence or absence of each component can be used to filter out certain entities. In this way, systems can perform operations only on entities which are relevant to the systems function. A system may also write back to the database and following systems can access the newly written data. This general structure can be seen in \autoref{fig:ecs_db_example}.
+Another way of understanding these concepts is to compare them to a relational database. In this paradigm, each component type has its own table and uses the entity it is associated with as primary key. A system then would perform queries for the data in database. The entity information can be used for joining data from different component tables and the presence or absence of each component can be used to filter out certain entities. In this way, systems can perform operations only on entities which are relevant to the systems function. A system may also write back to the database and following systems can access the newly written data. This general structure can be seen in \autoref{fig:ecs_db_example}.
 
 \begin{figure}
   \centering
@@ -215,21 +221,25 @@ Another way of understanding is to compare these concepts to a relational databa
   \label{fig:ecs_db_example}
 \end{figure}
 
-Depending on the details of how components are stored, this architecture maximizes the efficiency of the CPU cache when compared the architectures of other simulators, witch gives it a substantial performance advantage. This happens because the data for each component type can be stored in a single place, usually an array, and can be directly loaded into the cache when a system starts its execution, meaning that it has high cache spacial locality. As a result, the CPU does not need to check the RAM as often, witch reduces the time it takes to retrieve data and consequently improves performance. For comparison, in simulators such as Vadere, the update loop first goes through each entity, then it retrieves the position of each. As a result, the CPU has to go through noncontinuous regions of memory, increasing the number of cache misses.
+Depending on the details of how components are stored, this architecture maximizes the efficiency of the CPU cache when compared the architectures of other simulators, witch gives it a substantial performance advantage. This happens because the data for each component type can be stored in a single place, usually an array, and can be directly loaded into the cache when a system starts its execution, meaning that it has high cache spacial locality. As a result, the CPU does not need to check the RAM as often, witch reduces the time it takes to retrieve data and consequently improves performance. For comparison, in simulators such as Vadere, the update loop first goes through each entity, then it is able to load the data for each individual property. As a result, the CPU has to go through noncontinuous regions of memory, increasing the number of cache misses.
 
-In addition, the fact that systems are independent allows for a certain level of parallelism to take advantage of multithreaded systems. This comes in two forms: Internal and external parallelism. External parallelism is when two or more systems may be executed at the same time. This can happen when the systems do not modify any pieces of data that are used by each other and there is no logical requirement for their execution to be sequential. Such an approach is useful when multiple kinds of data are necessary for one operation, but computing them is time-consuming. The expensive computations can be split off into multiple different systems that save their that to intermediate components. After all these computation systems have concluded their execution, the final system gathers the intermediate components and performs the operation. Internal parallelism can occur when it is possible to process each entry independently of each other. In this case, a system can split the data it has received into multiple groups that can be processed in parallel.
+In addition, the fact that systems are independent allows for a certain level of parallelism to take advantage of multithreaded systems. This comes in two forms: Internal and external parallelism. External parallelism is when two or more systems may be executed at the same time. This can happen when the systems do not modify any pieces of data that are used by each other and there is no logical requirement for their execution to be sequential. Such an approach is useful when multiple kinds of data are necessary for one operation, but computing them is time-consuming. The expensive computations can be split off into multiple different systems that save their data to intermediate components. After all these computation systems have concluded their execution, the final system gathers the intermediate components and performs the operation. Internal parallelism can occur when it is possible to process each entry independently of each other. In this case, a system can split the data it has received into multiple groups that can be processed in parallel.
 
 While equivalent techniques could be employed on existing simulators, such changes would be hard to archive and prone to casing issues. In \gls{ecs}, these changes are much simpler. Internal parallelism is possible in a large portion of cases, and it is much easier to implement, although it may not be worth it for simple and inexpensive systems. External pararalesim is somewhat harder because it requires an analysis of the inputs and outputs of the systems, however, some \gls{ecs} frameworks such as Bevy ECS \cite{bevy} allow for a seamless implementation of these concepts.
 
 In addition to the performance benefits, \gls{ecs} promotes adaptable and reusable design. Components work best when they represent a singular aspect of each entity and are very simple. Such components can be composed into multiple kinds of entities and, because the systems use the components associated with an entity to decide if they will perform operations on them, the behavior of the entities can be changed mid-simulation. For example, a pedestrian may have a \verb|Positiona| and \verb|Speed| component, which causes the \verb|SpeedSytem| to make it move according to its speed. If the pedestrian then decides to sit, the \verb|Speed| component can be removed, witch automatically removes it from the \verb|SpeedSytem|'s list of entities to operate on. Also, if it is desired to add other kinds of moving objects to the simulation, cars for example, it is not necessary to create new logic to handle their movement. Any entity with \verb|Positiona| and \verb|Speed| will automatically be affected by the \verb|SpeedSytem|.
 
-[drawbacks]
+Despite these advantages, \gls{ecs} also poses some problems which have limited its acceptance even on the fields where it sees some use. The main one is lack of familiarity of programmers who use \gls{oop} and other common programming paradigm's with the design principals it is build upon. For example, while \gls{ecs} can be implemented in \gls{oop} focused languages, it breaks many of \gls{oop}'s principals. Making effective use of this architecture requires reframing problems to avoid some aspects such as inheritance and polymorphism. This problem compounds on itself, as the lack of popularity means that, generally speaking, tooling for this architecture is less developed than others and their is less information about it, which naturally perpetuates its status.
+
+\gls{ecs} also has some problems inherit to its structure. Due to the fact that component data is effectively global, tracking down issues caused by improper manipulation of data is hard, as they could come from anywhere. Additionally, observing and understanding the global data is a complicated affair during debuging, as the data for each entity is spread around multiple places and using possibly using multiple forms of storage, making it hard to have a wholistic picture of what the systems state is.
+
+[Maybe this advantage and disadvantages sections should come after the component storage strategies]
 
 \subsection{Component storage strategies}
 
 While all \gls{ecs} implementation have the same basic structure, one of the main differentiating factors between then is the underlying method for storing the component data and their connections to an entity. Since querying entity and component data is one of the most performed operations on this paradigm, having a well-thought-out method for storing and retrieving such data is of utmost importance. The following is a non-exhaustive categorization of ECS implementations when it comes to this aspect:
 
-\textbf{Archetypes}: Implementations that rely on archetypes group entities based on the components they have. Each combination is called an archetype and is stored in a contiguous area of memory, often as a struct of arrays, meaning that they have great cache spacial locality. When a system requires data, the framework checks witch archetypes conform to the requirements and provides the data. This strategy has the best iteration performance of the discussed implementations. However, adding or removing components from an entity forces it to move all the data related to that entity to another archetype. This reduces the efficiency of such operations. Examples that mainly use this approach include Flecs [SRC], Unity DOTS [SRC], Bevy ECS [SRC], Legion [SRC] and Hecs [SRC]. For a visual example, see \autoref{fig:ecs_archetype_example}.
+\textbf{Archetypes}: Implementations that rely on archetypes group entities based on the components they have. Each combination is called an archetype and is stored in a contiguous area of memory, often as a struct of arrays, meaning that they have great cache spacial locality. When a system requires data, the framework checks witch archetypes conform to the requirements and provides the data. This strategy has the best iteration performance of the discussed implementations. However, adding or removing components from an entity forces it to move all the data related to that entity to another archetype. This reduces the efficiency of such operations. Examples that mainly use this approach include Flecs \cite{flecs}, Unity DOTS \cite{unityDots}, Bevy ECS \cite{bevy}, Legion \cite{legion} and Hecs \cite{hecs}. For a visual example, see \autoref{fig:ecs_archetype_example}.
 
 \begin{figure}
   \centering
@@ -238,13 +248,11 @@ While all \gls{ecs} implementation have the same basic structure, one of the mai
   \label{fig:ecs_archetype_example}
 \end{figure}
 
-\textbf{Sparse set}: On sparse set implementations, a sparse set is maintained for each component type. Sets use entities as keys to retrieve components and the framework checks all the sparse sets for the components each system requests to gather the data. As a result, iteration over the entities is much slower due to lack of cache locality, however adding or removing components becomes much faster. Entt [SRC] and Shipyard [SRC] are some of the most well known frameworks that use sparse sets. This approach is the most similar to the one depicted in \autoref{fig:ecs_db_example}.
+\textbf{Sparse set}: On sparse set implementations, a sparse set is maintained for each component type. Sets use entities as keys to retrieve components and the framework checks all the sparse sets for the components each system requests to gather the data. As a result, iteration over the entities is much slower due to lack of cache locality, however adding or removing components becomes much faster. Entt \cite{entt} and Shipyard \cite{shipyard} are some of the most well known frameworks that use sparse sets. This approach is the most similar to the one depicted in \autoref{fig:ecs_db_example}.
 
-\textbf{Bitset based}: As the name sujesujests, bitset based implementations work by using a bitset to say if an entity has a certain component. EntityX [SRC] and Specs [SRC] are some notable examples in this area.
+\textbf{Bitset based}: As the name suggests, bitset based implementations work by using a bitset to say if an entity has a certain component. This can be done by having arrays that contain the component data and a bitset for each entity, or it can use other data structures such as hierarchical bitsets, which may provide better iterative performance. EntityX \cite{entityx} and Specs \cite{specs} are some notable examples in this area.
 
-[Example image]
-
-Due to the many benefits and drawbacks of each approach. Some \gls{ecs} frameworks allow for the storage type to be defined in a component by component basis. Such an approach allows developers to maximize the performance of the system. Generally speaking, most components should be stored in something similar to what the archetype implementation use, which gives the best possible iterative performance. However, components that are frequently added and removed in short succession can be stored similarly to sparse set or bitset implementations to reduce the overhead of these operations. Examples of frameworks that allow for such a nuanced approach include Bevy ECS \cite{bevy} and Specs [SRC].
+Due to the many benefits and drawbacks of each approach. Some \gls{ecs} frameworks allow for the storage type to be defined in a component by component basis. Such an approach allows developers to maximize the performance of the system. Generally speaking, most components should be stored in something similar to what the archetype implementation use, which gives the best possible iterative performance. However, components that are frequently added and removed in short succession can be stored similarly to sparse set or bitset implementations to reduce the overhead of these operations. Examples of frameworks that allow for such a nuanced approach include Bevy ECS \cite{bevy} and Specs \cite{specs}.
 
 \section{ECSMoS implementation}
 
@@ -255,12 +263,12 @@ Due to the many benefits and drawbacks of each approach. Some \gls{ecs} framewor
   \item Bevy ECS
 \end{itemize}
 
-\subsection{ECSMoS Architecture}
+\subsection{ECSMoS General Structure}
 \subsection{Features?}
 
 \section{Evaluation}
 
-[For example. Imagine when want to simulate a crosswalk. In this case we need an obstacle that exists than disappears. In vadere, this would need to be done inside the model itself, witch seems out of scope [are you sure this is how it would work?] because changing the simulator itself is hard. In this architecture, it could be added with another system and a few components. The same goes for one way paths. Menge could do this because it splits the problem into parts [I think], but Vadere has a problem. This is an interesting example. It shows how ECS is kind of a natural progression. Vadere works as a monolith. Menge has some spliting, but it may be restrictive if you want more granularity or somethign that crosses the boundaries. ECSMoS has "infinite" granularity and agregation capabilities]
+[For example. Imagine when want to simulate a crosswalk. In this case we need an obstacle that exists than disappears. In Vadere, this would need to be done inside the model itself, witch seems out of scope [are you sure this is how it would work?] because changing the simulator itself is hard. In this architecture, it could be added with another system and a few components. The same goes for one way paths. Menge could do this because it splits the problem into parts [I think], but Vadere has a problem. This is an interesting example. It shows how ECS is kind of a natural progression. Vadere works as a monolith. Menge has some spliting, but it may be restrictive if you want more granularity or somethign that crosses the boundaries. ECSMoS has "infinite" granularity and agregation capabilities]
 \section{Conclusion}
 
 \printbibliography
