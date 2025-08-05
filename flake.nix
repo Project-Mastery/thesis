@@ -11,13 +11,16 @@
     pkgs = nixpkgs.legacyPackages.${system};
   in 
   {
-    devShells.${system}.default= pkgs.mkShell
-    {
+    devShells.${system}.default = pkgs.mkShell {
       nativeBuildInputs = with pkgs; [
         texliveFull
         tex-fmt
         inkscape
+        glibcLocales
       ];
+
+      LANG = "en_US.UTF-8";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
     };
   };
 }

@@ -97,7 +97,7 @@
         }
     ],
     "ltex.language": "en-US",
-    "latex-workshop.view.pdf.invert": 1,
+    "latex-workshop.view.pdf.invert": 0,
     "gitlens.currentLine.enabled": false,
     "gitlens.hovers.currentLine.details": false,
     "gitlens.hovers.currentLine.changes": false,
