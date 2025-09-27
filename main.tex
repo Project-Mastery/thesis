@@ -210,16 +210,21 @@ These were the simulation frameworks that passed all the filtering criteria:
   \label{fig:vadere_architecture}
 \end{figure}
 
-\textbf{MomenTUMv2} is a microscopic agent-based pedestrian simulator written in Java and developed by the Technical University of Munich \cite{kielarMomenTUMv2ModularExtensible2016}. Most of its inner workings are implemented in the form of models, which are thought of as "operation providers". These are implementations of the Strategy and Template Method software patterns. This modularity is very broad, including configuration, pedestrians generators/removers, analyzers and much more. Models that do not fit into any pre-defined category can be added in a special section. When compared to other solutions such as Vadere, it is much more adaptable, but it comes with a cost in terms of complexity and implementation time. One of its main benefits is that it allows the use of hybrid models, meaning models that connect two or more pre-existing models of the same layer to create behavior that is a mixture of them depending on the circumstances. Finally, it has seen very little change since 2018 and its last update was on 2020. Since them, there has been no development activity, and its lead developer no longer works at the Technical University of Munich. The most recent available versions of the code are not able to be executed due to the incomplete implementation of certain features.
+\textbf{MomenTUMv2} is a microscopic agent-based pedestrian simulator written in Java and developed by the Technical University of Munich \cite{kielarMomenTUMv2ModularExtensible2016}. Most of its inner workings are implemented in the form of models, which are thought of as "operation providers". These are implementations of the Strategy and Template Method software patterns. This modularity is very broad, including configuration, pedestrians generators/removers, analyzers and much more. Models that do not fit into any pre-defined category can be added in a special section. When compared to other solutions such as Vadere, it is much more adaptable, but it comes with a cost in terms of complexity and implementation time. One of its main benefits is that it allows the use of hybrid models, meaning models that connect two or more pre-existing models of the same layer to create behavior that is a mixture of them depending on the circumstances. Finally, it has seen very little change since 2018 and its last update was on 2020. Since them, there has been no development activity, and its lead developer no longer works at the Technical University of Munich. The most recent available versions of the code are not able to be executed due to the incomplete implementation of certain features. A simplified version of MomenTUMv2's architecture and execution flow can be seen on \autoref{fig:momentun_architecture}.
 
-[Momentum architecture diagram]
+\begin{figure}[h]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{momentun_architecture.drawio.svg}
+  \caption{Simplified MomenTUMv2 structure and flow. Adapted from \cite{kielarMomenTUMv2ModularExtensible2016}. Dashed rectangles represent organizational units. Solid rectangles represent a set of generic models and. Sets may contain many other families of sub-models within.}
+  \label{fig:momentun_architecture}
+\end{figure}
 
 \textbf{\gls{sumo}} is a traffic simulator widely used in traffic engineering and related topics \cite{SUMO2018}. While it is mostly focused on vehicular movement, it does have some built-in mechanism to simulate pedestrian movement. However, these were built with the purpose of enriching the traffic simulations and are very limited. For example, pedestrians are not allowed to freely roam in the 2D plane, instead they are restricted to certain lines/paths. For more robust simulation capabilities, it is possible to use JuPedSim together with \gls{sumo}, however this integration is still a work in progress.
 
 Finally, there are other libraries such as \textbf{Mesa} \cite{hoevenMesa3Agentbased2025}, \textbf{Agents.jl} \cite{Agents.jl} and many others, which focus on agent based modeling. While these can be used for pedestrians simulations, they have little to no pre-built infrastructure for model authors, requiring a full implementation to be done for any comparison. However, due to their larger audience, they may have better tools for analysis and documentation that other purpose built simulators. \autoref{table:available-simulators-summary} contains a summary of the considered frameworks and their characteristics. It is worth noting that projects with no clear status and no recent activity were classified as inactive. Only projects which have been officially terminated were classified as discontinued.
 
 \begin{center}
-  \begin{table}
+  \begin{table}[h]
     \begin{tabularx}{\textwidth}{ | X | c | c | c | c | c | } 
       \hline
       Name & Languages & Has \gls{ui} & License & Last Update & Project Status \\ 
@@ -307,11 +312,18 @@ Due to the many benefits and drawbacks of each approach. Some \gls{ecs} framewor
 
 Depending on the details of how components are stored, this architecture maximizes the efficiency of the CPU cache when compared the architectures of other simulators, which gives it a substantial performance advantage. This happens because the data for each component type can be stored in a single place, usually an array, and can be directly loaded into the cache when a system starts its execution, meaning that it has high cache spacial locality. As a result, the CPU does not need to check the RAM as often, which reduces the time it takes to retrieve data and consequently improves performance. For comparison, in simulators such as Vadere, the update loop first goes through each entity, then it is able to load the data for each individual property. As a result, the CPU has to go through noncontinuous regions of memory, increasing the number of cache misses.
 
-In addition, the fact that systems are independent allows for a certain level of parallelism to take advantage of multithreaded systems. This comes in two forms: Internal and external parallelism. External parallelism is when two or more systems may be executed at the same time. This can happen when the systems do not modify any pieces of data that are used by each other and there is no logical requirement for their execution to be sequential. Such an approach is useful when multiple kinds of data are necessary for one operation, but computing them is time-consuming. The expensive computations can be split off into multiple different systems that save their data to intermediate components. After all these computation systems have concluded their execution, the final system gathers the intermediate components and performs the operation. Internal parallelism can occur when it is possible to process each entry independently of each other. In this case, a system can split the data it has received into multiple groups that can be processed in parallel.
+In addition, the fact that systems are independent allows for a certain level of parallelism to take advantage of multithreaded systems. This comes in two forms: Internal and external parallelism. External parallelism is when two or more systems may be executed at the same time. This can happen when the systems do not modify any pieces of data that are used by each other and there is no logical requirement for their execution to be sequential. Such an approach is useful when multiple kinds of data are necessary for one operation, but computing them is time-consuming. The expensive computations can be split off into multiple different systems that save their data to intermediate components. After all these computation systems have concluded their execution, the final system gathers the intermediate components and performs the operation. 
+
+Internal parallelism can occur when it is possible to process each entry independently of each other. In this case, a system can split the data it has received into multiple groups that can be processed in parallel. These two modes of parallelism can also work together. In this situation, systems can be executed in parallel and systems can split their data into different parallel processes. \autoref{fig:external_vs_internal_parallelism} shows an example of these approaches.
+
+\begin{figure}
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{internal_vs_external_parallelism.drawio.svg}
+  \caption[External VS internal parallelism]{Example of how internal and external parallelism work and how they operate when combined.}
+  \label{fig:external_vs_internal_parallelism}
+\end{figure}
 
 While equivalent techniques could be employed on existing simulators, such changes would be hard to archive and prone to causing issues. In \gls{ecs}, these changes are much simpler. Internal parallelism is possible in a large portion of cases, and it is much easier to implement, although it may not be worth it for simple and inexpensive systems. External pararalesim is somewhat harder because it requires an analysis of the inputs of the systems to prevent concurrent modifications to the same piece of data or to handle it gracefully. However, some \gls{ecs} frameworks, such as Bevy ECS \cite{bevy}, allow for a seamless implementation of these concepts.
-
-[external and internal parallelism diagram (make sure to show how dependencies between systems work)]
 
 \subsection{Benefits and drawbacks}
 
@@ -323,7 +335,7 @@ Despite these advantages, \gls{ecs} also poses some problems which have limited 
 
 
 
-\section{ ECSMoS implementation} \label{sec:ecsmos-implementation}
+\section{ECSMoS implementation} \label{sec:ecsmos-implementation}
 
 Considering the problem of other simulators referenced in \autoref{sec:existing-frameworks}, the main objective of \gls{ecsmos} is to be more flexible than existing simulators. It should accommodate the addition of new models easily, should remove as many constraints for models authors as it is possible, allow for the creation of variants of existing models and the creation of hybrid models. Additionally, it should be at least as performant as existing solutions. While there are other factors that greatly influence the usability of a simulator such as UI, documentation and integrations with other tools, these were not focused upon for this work. Any implementation for these pr other areas was merely made for the purpose of supporting the goals of the project.
 
@@ -351,7 +363,7 @@ Bellow is a list of the currently available modules and their general function:
   \item Start Time Module: Simply records the time at which the simulation started. This information is used during the export for naming and differentiating various simulation runs.
 \end{itemize}
 
-\autoref{fig:module_dependency} shows an example of how inter-module dependencies and system sets operate. It is important to not that it does not show all systems and the general flow has been simplified for better understanding. The image shows two modules, their systems, system sets and how they interact. The rounded boxes represent pre-defined systems sets and the arrows between the systems and systems sets represent their dependencies. Systems without a dependency such as \verb|Compute Obstacle Colision Map| can start execution as soon as possible and, in this example, can also be executed in parallel. Bevy executes systems in parallel nor particular order or preference, and it can be changed from iteration to iteration. The height of each system denotes the period of time when it can be executed. As it is possible to see, \verb|Compute Motivation Force| depends on the Flow Field Pathfinding module's system set, meaning that it will only be executed after it as finished, unlike the other social forces systems.
+\autoref{fig:module_dependency} shows an example of how inter-module dependencies and system sets operate. It is important to not that it does not show all systems and the general flow has been simplified for better understanding. The image shows two modules, their systems, system sets and how they interact. The rounded boxes represent pre-defined systems sets and the arrows between the systems and systems sets represent their dependencies. Systems without a dependency such as \verb|Compute Obstacle Colision Map| can start execution as soon as possible and, in this example, can also be executed in parallel. Bevy executes systems in parallel no particular order, and it can be changed from iteration to iteration. The height of each system denotes the period of time when it can be executed. As it is possible to see, \verb|Compute Motivation Force| depends on the Flow Field Pathfinding module's system set, meaning that it will only be executed after it as finished, unlike the other social forces systems.
 
 \begin{figure}[h]
   \centering
@@ -382,17 +394,25 @@ Like Vadere, \gls{ecsmos} does not have unified data collection or output mechan
 
 For the pursues of this work, two kinds of evaluations were defined for the simulator: Quantitative and qualitative. The quantitative evaluation consists of measuring its performance when compared to other simulators in similar test scenarios. The objective of this analysis is to check if the change to this new architecture somehow negatively impacted its performance or if it caused improvements.
 
+In addition to \gls{ecsmos}, two other simulators were selected for the comparison, Vadere and Jupedsim. These were chosen because they are the most robust ones still being updated. Out of the remaining simulators, MomenTUMv2 would also have been a good candidate due to how flexible its architecture is. However, the fact that its continued development is uncertain and that it was left in a non-functioning state with no clear indication of which previous version could be considered usable, meant that it was decided to remove it from the comparison. Conversely, jCrowdSimulator receives regular updates, but was not considered for this comparison for lacking much of the basic infrastructure of a general simulator and due to its tight coupled nature.
+
 [Performance scenarios]
 
 However, the qualitative evaluation is arguably more important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. For this evaluation, a set of common scenarios seen during development of new models was proposed. \autoref{table:test-scenarios} contains a list of the scenarios. These were designed to test specifics aspects of each simulator. However, they also had to be somewhat flexible to avoid hitting specific weak points of the simulators that could be easily avoided by slight shifts on the definition criteria. 
 
 Scenario 1 contain an example of this flexibly. The simulators being evaluated do not all use the same basic pathfinding system. Since what pathfinding systems are available is not an object of study in this dissertation, it was decided to write the scenario in such a way to allow for the use of any one of these. Similar accommodations have been made on the other scenarios. 
 
+Scenarios 1 to 3 test basic situations that are likely to come up during the development of most novel models. If they are completely new, they would likely go with a path more similar to scenario 1. Models that are mostly based on another but have additional variables/factors would mach scenario 2. Lastly, Scenario 3 covers additional implementations that may not cleanly fit into the precious categories.
+
+Scenarios 4 and 6 take aim at features that are less commonly to be used, but that may be hard barriers when it comes to implementation. Some models explicitly consider how an agent makes decisions on a changing environment \cite{DEIULIIS2023104527}, while others include actions that involve things other than movement, such as waiting in line and loitering \cite{KIM2013232, ALAM2022100527}. 
+
+A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementation that works well for the \gls{sfm}, but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
+
 After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: Implementability (meaning, ease of implementation), reusability and complexity. These grades were given in on a three level scale, going from poor to good. The details of each level are described on \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario, its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
 
 \begin{center}
   \begin{table}
-    \begin{tabularx}{\textwidth}{ | l | p{2.5cm}| X | p{4cm} | } 
+    \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
       \hline
       \textnumero & Name & Description & Objective \\ 
       \hline
@@ -408,23 +428,23 @@ After the scenario definitions, an attempt was made to implement them on each si
       \hline
       3 & 
       Hybrid model &  
-      Create a model base on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account like \cite{DEIULIIS2023104527} [Get another citation to avoid repeting this one]& 
+      Create a model base on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account like thos in \cite{Alrashed_Shamma_2020} & 
       Test general adaptability of already existing models to larger changes\\
       \hline
       4 & 
       Procedural environment changes &  
       Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
-      Determine weather or not it is possible \\
+      Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
       \hline
       5 & 
       Implementing a new pathfinding algorithm &  
-      & 
-      \\
+      Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
+      Check flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
       \hline
       6 & 
-      Queuing, loitering and single-file behavior &  
-      & 
-      \\
+      Queuing and loitering&  
+      Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
+      Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. Thy also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
       \hline
     \end{tabularx}
     \caption{List and description of test scenarios.}
@@ -432,13 +452,11 @@ After the scenario definitions, an attempt was made to implement them on each si
   \end{table}
 \end{center}
 
-
-
 \begin{center}
   \begin{table}
-    \begin{tabularx}{\textwidth}{ | p{3.0cm} | l | X | } 
+    \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
-      Criteria & Name & Description \\ 
+      Criteria & Grade & Description \\ 
       \hline
       Implementability & Good & 
       The simulator can easily accommodate the required additions. It has a clear place and method for receiving the new model, requiring minimal changes to existing code.
@@ -486,19 +504,34 @@ After the scenario definitions, an attempt was made to implement them on each si
 
 \subsection{Qualitative Evaluation Results}
 
+[This section needs a warm-up]
+
+Each simulator had very similar results in scenarios 1, 2 and 3. These are not complicated setups and serve as a comparison basis for the other ones. However, they already reveal some trends that will persist over most of the other scenarios. Firstly, even on basic scenarios, \gls{ecsmos} is more complicated than desired. This is due to how open-ended its architecture is. Because new systems can be added to any particular point in the schedule, it in practice means that it is always somewhat complicated to understand the control flow of the simulator. However, implementing model variations and hybrid models is work well, as these can be added on top of existing models easily via the addition of a few systems that work together with the older ones.
+
+Secondly, Jupedsim generally performs worse than the others being studied under these criteria. Such a pattern stems from its highly coupled internal structure. Even on basic scenarios, Jupedsim requires many changes all around the codebase in the form of string comparisons and alike that define how execution will go depending on each model. This is most notable in the interface between Python and C++ code, where there are large sections of model specific code which are executed depending on a sequence of chained conditions.
+
+Finally, Vadere receives a downgrade in reusability scores starting on scenario 2 due to the fact that its pre-existing model implementations have a somewhat limited level of extensibility. With better choices when it comes to how the code is divided or how classes and interfaces are structured, it could cut down on the amount of code duplication significantly.
+
+Scenario 4 introduces more challenges when it comes to flexibility. Both Vadere and Jupedsim suffer on this front, as they assume a static environments, which is a reasonable expectation for some simpler situations, but that is not a universal property [and a source as an example here]. Withing Vadere, it is still possible to accommodate these with some work, but it will require reengineering some portions of the simulator itself. However, they are basically unimplementable in Jupedsim, as it would require reengineering most of the simulator. In comparison, \gls{ecsmos} handles such things much better. Bevy ECS, provides methods for detecting this kind of changes, and, in many situations, these can be added with little to no modification to the code of the systems themselves. In the situation where changes to the systems are necessary, those are limited and much more predictable. 
+
+Scenario 5 causes a reversal in the grades between Vadere and Jupedsim. Vadere's pathfinding algorithm, referred to as floor fields, is much more integrated with the simulator architecture and existing models than Jupedsim's, which uses triangulation to determine the best possible path for each pedestrian. While it is possible to replace floor fields with some other mechanism, it would involve changing much of the simulator code and all current implementations of models, making it impractical. In \gls{ecsmos}, such a thing is perfectly possible. Reuse of code between the current pathfinding system and a new one may be limited, but the architecture will not impose additional challenges and the changes necessary to allow already existing models to use it are small and concentrated in singular places.
+
+Finally, on Scneario 6, Jupedsim performs very well. It's architecture actively expects such behavior, so it is well integrated and quite flexible to changes. While \gls{ecsmos} was not designed with this in mind, this can be accomplished similarly to how hybrid models were implemented on scenario 3. Queuing and loitering work as an extention on top of the already available model. Vadere's implementation in theory could be done in the same way as \gls{ecsmos}'s, but in practice it would require rewriting the whole model to take this into account due to some limits to its extensibility. Therefore, it gets a downgrade in the reusability criteria.
+
+A summary of the results can be seen on \autoref{table:qualitative-summary}. As the results show, Vadere and \gls{ecsmos} are the best for basic scenarios, with Vadere having a slight edge. Each one has its strong and weak points, but they are generally good choices for implementing a novel pedestrian model that does not take into account more complicated things such as changes to the environment. However, once more involved changes are necessary, \gls{ecsmos} pulls ahead because of its flexibility. In contrast, Jupedsim has generally worse results than these two, with its only standout result on scenario 6.
+
 \begin{center}
-  \begin{table}[h]
-    \begin{tabularx}{\textwidth}{ | p{4cm} | X | X | X | X | X | X | X | X | X | X | X | X | } 
+  \begin{table}
+    \begin{tabularx}{\textwidth}{ | p{3.7cm} | X | X | X | X | X | X | X | X | X | } 
       \hline
       \backslashbox{Scenario}{Simulator} & 
       \multicolumn{3}{|c|}{\gls{ecsmos}} & 
       \multicolumn{3}{|c|}{Vadere} & 
-      \multicolumn{3}{|c|}{Jupedsim} & 
-      \multicolumn{3}{|c|}{MomenTUMv2}
+      \multicolumn{3}{|c|}{Jupedsim} 
       \\
       \hline
-      Criteria &
-      \rotatebox[origin=c]{90}{Implementability} &
+      &
+      \rotatebox[origin=c]{90}{\hphantom{O}Implementability\hphantom{O}} &
       \rotatebox[origin=c]{90}{Reusability} &
       \rotatebox[origin=c]{90}{Complexity} &
 
@@ -508,27 +541,42 @@ After the scenario definitions, an attempt was made to implement them on each si
 
       \rotatebox[origin=c]{90}{Implementability} &
       \rotatebox[origin=c]{90}{Reusability} &
-      \rotatebox[origin=c]{90}{Complexity} &
-
-      \rotatebox[origin=c]{90}{Implementability} &
-      \rotatebox[origin=c]{90}{Reusability} &
-      \rotatebox[origin=c]{90}{Complexity}
+      \rotatebox[origin=c]{90}{Complexity} 
       \\ 
       \hline
-      New Model & 0 \\
+      (1) New Model & 
+      Good & Good & Fair & 
+      Good & Good & Good & 
+      Fair & Fair & Fair\\
       \hline
-      Model variation \\
+      (2) Model variation & 
+      Good & Good & Fair & 
+      Good & Fair & Good & 
+      Fair & Fair & Fair\\
       \hline
-      Hybrid model \\
+      (3) Hybrid model & 
+      Good & Good & Fair & 
+      Good & Fair & Good & 
+      Fair & Fair & Fair \\
       \hline
-      Procedural environment changes \\
+      (4) Procedural environment changes &
+      Good & Good & Fair &
+      Fair & Fair & Poor &
+      Poor & Poor & Poor \\
       \hline
-      Implementing new pathfinding algorithm \\
+      (5) Implementing new pathfinding algorithm &
+      Good & Fair & Fair &
+      Poor & Fair & Poor &
+      Fair & Fair & Fair \\
       \hline
-      Queuing, loitering and single-file behavior \\
+      (6) Queuing and loitering&
+      Good & Good & Fair &
+      Good & Poor & Good &
+      Good & Good & Good \\
       \hline
     \end{tabularx}
     \caption{Summary of qualitative results.}
+    \label{table:qualitative-summary}
   \end{table}
 \end{center}
 
