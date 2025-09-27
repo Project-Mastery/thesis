@@ -285,7 +285,7 @@ Generally speaking, in a \gls{ecs} implementation, most things are divided into 
 \begin{figure}
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{ecs_as_database.drawio.svg}
-  \caption{Example of how an ECS can be seen as a database. [This possibly needs a citation to https://csherratt.github.io/blog/posts/specs-and-legion/]}
+  \caption{Example of how an ECS can be seen as a database. Adapted from \cite{csherratt}.}
   \label{fig:ecs_db_example}
 \end{figure}
 
@@ -512,7 +512,7 @@ Secondly, Jupedsim generally performs worse than the others being studied under 
 
 Finally, Vadere receives a downgrade in reusability scores starting on scenario 2 due to the fact that its pre-existing model implementations have a somewhat limited level of extensibility. With better choices when it comes to how the code is divided or how classes and interfaces are structured, it could cut down on the amount of code duplication significantly.
 
-Scenario 4 introduces more challenges when it comes to flexibility. Both Vadere and Jupedsim suffer on this front, as they assume a static environments, which is a reasonable expectation for some simpler situations, but that is not a universal property [and a source as an example here]. Withing Vadere, it is still possible to accommodate these with some work, but it will require reengineering some portions of the simulator itself. However, they are basically unimplementable in Jupedsim, as it would require reengineering most of the simulator. In comparison, \gls{ecsmos} handles such things much better. Bevy ECS, provides methods for detecting this kind of changes, and, in many situations, these can be added with little to no modification to the code of the systems themselves. In the situation where changes to the systems are necessary, those are limited and much more predictable. 
+Scenario 4 introduces more challenges when it comes to flexibility. Both Vadere and Jupedsim suffer on this front, as they assume static environments, which is a reasonable expectation for some simpler situations, but that is not a universal property. Withing Vadere, it is still possible to accommodate these with some work, but it will require reengineering some portions of the simulator itself. However, they are basically unimplementable in Jupedsim, as it would require reengineering most of the simulator. In comparison, \gls{ecsmos} handles such things much better. Bevy ECS, provides methods for detecting this kind of changes, and, in many situations, these can be added with little to no modification to the code of the systems themselves. In the situation where changes to the systems are necessary, those are limited and much more predictable. 
 
 Scenario 5 causes a reversal in the grades between Vadere and Jupedsim. Vadere's pathfinding algorithm, referred to as floor fields, is much more integrated with the simulator architecture and existing models than Jupedsim's, which uses triangulation to determine the best possible path for each pedestrian. While it is possible to replace floor fields with some other mechanism, it would involve changing much of the simulator code and all current implementations of models, making it impractical. In \gls{ecsmos}, such a thing is perfectly possible. Reuse of code between the current pathfinding system and a new one may be limited, but the architecture will not impose additional challenges and the changes necessary to allow already existing models to use it are small and concentrated in singular places.
 
