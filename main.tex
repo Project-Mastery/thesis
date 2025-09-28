@@ -8,8 +8,84 @@
 \blankpage
 \newpage
 
+\section*{Jury Composition}
+
+\noindent Presidente do júri
+
+Grau académico, nome do presidente do júri
+
+\noindent Vogais
+
+Grau académico, nome do presidente do júri
+
+Categoria profissional e o nome da Instituição
+
+\vspace{1cm}
+
+Grau académico, nome do presidente do júri
+
+Categoria profissional e o nome da Instituição
+
+\vspace{1cm}
+
+Grau académico, nome do presidente do júri
+
+Categoria profissional e o nome da Instituição
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\section*{Resumo}
+
+Este resumo não deverá ter uma extensão superior a 500 palavras em  português, inglês ou espanhol.
+
+\section*{Palavras chave}
+
+Cinco palavras chave no máximo.
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\section*{Abstract}
+
+Este resumo não deverá ter uma extensão superior a 500 palavras, por regra apresenta-se em inglês. Nos casos em que o documento seja escrito em língua inglesa ou espanhola, o abstract apresenta-se em  português.
+
+\section*{Keywords}
+
+Cinco palavras chave no máximo.
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
 \printglossary[type=\acronymtype,nonumberlist, title=List of Abbreviations]
-\newpage
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\renewcommand{\contentsname}{General Index}
+\tableofcontents
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\renewcommand{\listfigurename}{Figure Index}
+\listoffigures
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\renewcommand{\listtablename}{Table Index}
+\listoftables
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
 
 \mainmatter
 
@@ -23,27 +99,23 @@ One of the best tools from this area of study comes in the form of simulation mo
 
 There are many models for simulating the flow of pedestrians in an environment. However, designing and implementing models capable of reproducing phenomena seen in the real world is a complicated task. Pedestrian dynamics is an inherently interdisciplinary science [SRC] due to its object of study. It relies on concepts from areas as diverse as physics, engineering, psychology, computer science, and sociology. Simpler models may take into account only the physical part of crowd movement and ignore all else, while others deal with the effects of having people with different ages [SRC], disabilities [SRC] or even states of mind such as calm and panic [SRC].
 
-When these models are implemented, it is often done on top of an existing simulator or framework. These allow model authors to focus on the most relevant parts of their research while other tasks are handled by code already written and validated by others. Nevertheless, building a model on top of these simulators also come with certain disadvantages. Their architecture imposes restrictions on how the model can operate, meaning that certain simulators may not be compatible with a model because it breaks one or more of the assumptions made when the simulator was being designed. [NOTE: Example? Here or later?]
+When these models are implemented, it is often done on top of an existing simulator or framework. These allow model authors to focus on the most relevant parts of their research while other tasks are handled by code already written and validated by others. Nevertheless, building a model on top of these simulators also come with certain disadvantages. Their architecture imposes restrictions on how the model can operate, meaning that certain simulators may not be compatible with a model because it breaks one or more of the assumptions made when the simulator was being designed.
 
 Similarly, the architecture and technologies used by the simulator have a performance impact on the simulation. While less impactful than full incompatibility between model and simulator, low performance can significantly slow model development and usage. Larger or more complicated scenarios may take much longer than desired to be evaluated or required additional hardware.
 
 While there are many ways of mitigating such problems, using architectures found in other areas, such as \gls{ecs} offer some benefits. \gls{ecs} is a software architecture sometimes used in game development due to their much stricter performance requirements than standard simulators. Users and developers expect such frameworks to be able to handle thousands of entities updating multiple times a second, allowing them to deliver frame rates of upwards of 60 frames per second. Not only that, but, as this work will show, this paradigm is very flexible, allowing it to be used in many scenarios, including the study of crowds. Despite this, \gls{ecs} is still very uncommon in the scientific world.
 
-With this in mind, this work proposes a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has the objective of being as flexible as possible for model authors while maintaining a high performance.
-
-[Section description]
+With this in mind, this work proposes a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has the objective of being as flexible as possible for model authors while maintaining a high performance. \autoref{sec:overview} provides an overview of existing pedestrian simulation models, how they operate, and what simulation frameworks are available. \autoref{sec:ecs-architecture} talks about the details of the \gls{ecs} architecture, its benefits, and its drawbacks. \autoref{sec:ecsmos-implementation} goes over the details of how \gls{ecsmos} was implemented. \autoref{sec:evaluation} defines the evaluation criteria used to validate \gls{ecsmos} and compares it to other simulators. Finally, \autoref{sec:conclusion} provides the final remarks of the work done and concludes this thesis.
 
 [TLDR of results]
 
-\section{Current state of pedestrian modeling and simulation} \label{overview}
+\section{Current state of pedestrian modeling and simulation} \label{sec:overview}
 
 \subsection{Pedestrian models}
 
 Modeling pedestrians is a complicated affair. Humans have both conscious, subconscious and even physical aspects that affect how one moves. Because of this, there are many competing models in use, each one with its own benefits and limitations. There are many ways of categorizing them generally. One of the most common is based on the scale of the entities involved \cite{kleinmeierVadereOpenSourceSimulation2019}. Microscopic models focus on individual pedestrians and their movement, while macroscopic models avoid dealing with interactions between discrete entities, preferring to model the behaviors of whole crowds directly.
 
 Another way of categorizing models is proposed by \cite{martinez-gilModelingEvaluationScale2017}, which divides models into the following groups:
-
-[These could (should?) be expanded]
 
 \begin{itemize}
   \item Mechanics-based models: Inspired by continuum mechanics or force models.
@@ -196,7 +268,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false]{menge_architecture.drawio.svg}
-  \caption{Menge architecture and simulation flow. Adapted from \cite{curtisMengeModularFramework2016}.}
+  \caption[Menge architecture and simulation flow]{Menge architecture and simulation flow. Adapted from \cite{curtisMengeModularFramework2016}.}
   \label{fig:menge_architecture}
 \end{figure}
 
@@ -206,7 +278,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false]{vadere_architecture.drawio.svg}
-  \caption{Vadere architecture. Adapted from \cite{seitzSuperpositionPrincipleConceptual2016}}
+  \caption[Vadere architecture]{Vadere architecture. Adapted from \cite{seitzSuperpositionPrincipleConceptual2016}}
   \label{fig:vadere_architecture}
 \end{figure}
 
@@ -215,7 +287,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{momentun_architecture.drawio.svg}
-  \caption{Simplified MomenTUMv2 structure and flow. Adapted from \cite{kielarMomenTUMv2ModularExtensible2016}. Dashed rectangles represent organizational units. Solid rectangles represent a set of generic models and. Sets may contain many other families of sub-models within.}
+  \caption[Simplified MomenTUMv2 structure and flow]{Simplified MomenTUMv2 structure and flow. Adapted from \cite{kielarMomenTUMv2ModularExtensible2016}. Dashed rectangles represent organizational units. Solid rectangles represent a set of generic models and. Sets may contain many other families of sub-models within.}
   \label{fig:momentun_architecture}
 \end{figure}
 
@@ -258,7 +330,7 @@ Despite the variety of available tools, most of these are only compatible with a
 
 As a result of these limitations, many researchers in the field end up creating their own purpose built simulations. This makes comparison much harder, as certain implementation specificities can have impacts that are difficult to predict and take into account in a comparison. Removing these limitations could greatly improve comparability and convenience for model authors.
 
-\section{The \acrlong{ecs} architecture}
+\section{The \acrlong{ecs} architecture} \label{sec:ecs-architecture}
 
 The \gls{ecs} architecture is a data-oriented design pattern or framework sometimes used in the game development industry due to its flexibility, modularity, and high performance. However, it is difficult to find concrete statistics when it comes to its use, as most games are closed source and their inner workings are not widely discussed. It also has a loose definition and is sometimes confused with other similar software architectures that are also common in the area, most notably \gls{ec}. Additionally, the various implementations can be substantially different due to their underlying technologies and objectives. Finally, there are few academic sources for this topic. Most works on this subject are blogs, videos and personal anecdotes. Because of these factors, this section will discuss the most common aspects of the \gls{ec} architecture, saving details of the specific implementation used for \gls{ecsmos} discussed in \autoref{sec:ecsmos-implementation}. Nevertheless, this architecture has the potential of addressing many of the problems raised in \autoref{sec:existing-frameworks}, and merits further exploration.
 
@@ -276,7 +348,7 @@ Generally speaking, in an \gls{ecs} implementation, most things are divided into
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false]{ecs_basic_example.drawio.svg}
-  \caption{Example of how an ECS project is divided. On the right, there are entities and their related components. On the left, systems are shown. Systems are executed according to their specified order, and read/write data to and from the components.}
+  \caption[Example of how an ECS project is divided]{Example of how an ECS project is divided. On the right, there are entities and their related components. On the left, systems are shown. Systems are executed according to their specified order, and read/write data to and from the components.}
   \label{fig:ecs_basic_example}
 \end{figure}
 
@@ -285,7 +357,7 @@ Generally speaking, in an \gls{ecs} implementation, most things are divided into
 \begin{figure}
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{ecs_as_database.drawio.svg}
-  \caption{Example of how an ECS can be seen as a database. Adapted from \cite{csherratt}.}
+  \caption[Example of how an ECS can be seen as a database]{Example of how an ECS can be seen as a database. Adapted from \cite{csherratt}.}
   \label{fig:ecs_db_example}
 \end{figure}
 
@@ -298,7 +370,7 @@ While all \gls{ecs} implementations have the same basic structure, one of the ma
 \begin{figure}
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{archetype_based_ecs.drawio.svg}
-  \caption{Example of how archetype-based ECS stores components.}
+  \caption[Example of how archetype-based ECS stores components]{Example of how archetype-based ECS stores components.}
   \label{fig:ecs_archetype_example}
 \end{figure}
 
@@ -319,7 +391,7 @@ Internal parallelism can occur when it is possible to process each entry indepen
 \begin{figure}
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{internal_vs_external_parallelism.drawio.svg}
-  \caption[External VS internal parallelism]{Example of how internal and external parallelism work and how they operate when combined.}
+  \caption[External and internal parallelism comparison]{Example of how internal and external parallelism work and how they operate when combined.}
   \label{fig:external_vs_internal_parallelism}
 \end{figure}
 
@@ -367,7 +439,7 @@ Bellow is a list of the currently available modules and their general function:
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{module_dependency.drawio.png}
-  \caption{Example of how \gls{ecsmos} handles inter-module dependencies}
+  \caption[Example of how ECSMoS handles inter-module dependencies]{Example of how \gls{ecsmos} handles inter-module dependencies}
   \label{fig:module_dependency}
 \end{figure}
 
@@ -377,7 +449,7 @@ In the event that it becomes necessary to create a new module that has systems t
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{module_dependency_alt.drawio.png}
-  \caption{Example of how \gls{ecsmos} handles inter-module dependencies where there is no pre-defined system set grouping only the required systems. The thick dashed and rounded square represents the unnamed set created.}
+  \caption[Example of how ECSMoS handles the addition of systems with dependencies]{Example of how \gls{ecsmos} handles inter-module dependencies where there is no pre-defined system set grouping only the required systems. The thick dashed and rounded square represents the unnamed set created.}
   \label{fig:module_dependency_example_module}
 \end{figure}
 
@@ -389,7 +461,7 @@ In its current state, \gls{ecsmos} has a simple \gls{ui} that is useful for debu
 
 Like Vadere, \gls{ecsmos} does not have a unified data collection or output mechanism. Both use data collectors, which only store certain fields, and post processors that output the collected data to one or multiple files. In both cases, a trajectory data collector is provided that is able to track the positions of pedestrians and export them in the \gls{csv} format or equivalent. However, more complex data collection may require additional systems to be created.
 
-\section{Evaluation}
+\section{Evaluation} \label{sec:evaluation}
 
 For the purposes of this work, two kinds of evaluations were defined for the simulator: quantitative and qualitative. The quantitative evaluation consists of measuring its performance when compared to other simulators in similar test scenarios. The objective of this analysis is to check if the change to this new architecture somehow negatively impacted its performance or if it caused improvements.
 
@@ -579,9 +651,7 @@ A summary of the results can be seen in \autoref{table:qualitative-summary}. As 
   \end{table}
 \end{center}
 
-[For example. Imagine when want to simulate a crosswalk. In this case we need an obstacle that exists than disappears. In Vadere, this would need to be done inside the model itself, which seems out of scope [are you sure this is how it would work?] because changing the simulator itself is hard. In this architecture, it could be added with another system and a few components. The same goes for one way paths. Menge could do this because it splits the problem into parts [I think], but Vadere has a problem. This is an interesting example. It shows how ECS is kind of a natural progression. Vadere works as a monolith. Menge has some spliting, but it may be restrictive if you want more granularity or somethign that crosses the boundaries. ECSMoS has "infinite" granularity and agregation capabilities]
-
-\section{Conclusion}
+\section{Conclusion} \label{sec:conclusion}
 
 \printbibliography
 
