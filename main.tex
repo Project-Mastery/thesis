@@ -236,13 +236,11 @@ where:
 
 Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in empirical studies. For example, it replicates the "Faster-Is-Slower Effect", which occurs when the flow rate of pedestrians through an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space [SRC].
 
+[Lane formation diagram]
+
 \subsection{Existing simulation frameworks} \label{sec:existing-frameworks}
 
-[This needs a better "warm-up" before just going into the text itself]
-
-While there are many commercial products for simulating the behavior of pedestrians, they are all for the most part closed source and proprietary, meaning that it is difficult to scrutinize their results or implement new models. Solutions like this include PTV Viswalk \cite{viswalk}, MassMotion \cite{massmotion}, Legion Simulator \cite{legionsimulator} and AnyLogic \cite{anylogic}. Due to these limitations, scientific research tends to focus on more open simulators. 
-
-\subsubsection{Survey criteria}
+Before a full establishment of the design requirements for \gls{ecsmos} was made, it was necessary to study currently available solutions.While there are many commercial products for simulating the behavior of pedestrians, they are all for the most part closed source and proprietary, meaning that it is difficult to scrutinize their results or implement new models. Solutions like this include PTV Viswalk \cite{viswalk}, MassMotion \cite{massmotion}, Legion Simulator \cite{legionsimulator} and AnyLogic \cite{anylogic}. Due to these limitations, scientific research tends to focus on more open simulators. 
 
 To determine which simulators were most used and relevant to this work, a survey was performed. The following scientific article databases were searched: Google Scholar, IEEE Xplore, arXiv, SpringerLink, Science Direct and the Association for Computing Machinery Digital Library. For the search, the terms "pedestrian simulation", "pedestrian model", "pedestrian traffic", "pedestrian dynamics", "crow simulation", "crowd dynamics", "pedestrian motion", "crowd motion", "pedestrian movement", and "crowd movement" were used.
 The results were then filtered by date, removing anything prior to 2010. Finally, the top 50 results from each were evaluated.
@@ -273,7 +271,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \end{figure}
 
 
-\textbf{Vadere} is a situation framework for comparing different locomotion models developed by the Munich University of Applied Sciences \cite{kleinmeierVadereOpenSourceSimulation2019}. It was designed to be lightweight while still remaining relatively flexible. It contains both a simulation engine that can be executed via command line or via its own \gls{ui}. As shown in \autoref{fig:vadere_architecture}, Vadere follows the \gls{mvc} architecture where the \gls{ui} serves as the view, the state is the model, and the simulator core is the controller. Inside the simulation core, models are not implemented following any specific division of responsibilities like those seen in other simulators. Instead, it uses a more integrated approach. However, Vadere was designed to use a mechanism called floor fields to compute the paths of pedestrians. While this implementation has its benefits \cite{seitzSuperpositionPrincipleConceptual2016}, it imposes a performance drop on cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. Attempting to use other approaches would require rewriting large portions of its internal workings.
+\textbf{Vadere} is a simulation framework for comparing different locomotion models developed by the Munich University of Applied Sciences \cite{kleinmeierVadereOpenSourceSimulation2019}. It was designed to be lightweight while still remaining relatively flexible. It contains both a simulation engine that can be executed via command line or via its own \gls{ui}. As shown in \autoref{fig:vadere_architecture}, Vadere follows the \gls{mvc} architecture where the \gls{ui} serves as the view, the state is the model, and the simulator core is the controller. Inside the simulation core, models are not implemented following any specific division of responsibilities like those seen in other simulators. Instead, it uses a more integrated approach. However, Vadere was designed to use a mechanism called floor fields to compute the paths of pedestrians. While this implementation has its benefits \cite{seitzSuperpositionPrincipleConceptual2016}, it imposes a performance drop on cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. Attempting to use other approaches would require rewriting large portions of its internal workings.
 
 \begin{figure}[h]
   \centering
@@ -287,7 +285,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{momentun_architecture.drawio.svg}
-  \caption[Simplified MomenTUMv2 structure and flow]{Simplified MomenTUMv2 structure and flow. Adapted from \cite{kielarMomenTUMv2ModularExtensible2016}. Dashed rectangles represent organizational units. Solid rectangles represent a set of generic models and. Sets may contain many other families of sub-models within.}
+  \caption[Simplified MomenTUMv2 structure and flow]{Simplified MomenTUMv2 structure and flow. Adapted from \cite{kielarMomenTUMv2ModularExtensible2016}. Dashed rectangles represent organizational units. Solid rectangles represent a set of generic models or sets, which may contain many other families of sub-models within.}
   \label{fig:momentun_architecture}
 \end{figure}
 
@@ -463,13 +461,13 @@ Like Vadere, \gls{ecsmos} does not have a unified data collection or output mech
 
 \section{Evaluation} \label{sec:evaluation}
 
-For the purposes of this work, two kinds of evaluations were defined for the simulator: quantitative and qualitative. The quantitative evaluation consists of measuring its performance when compared to other simulators in similar test scenarios. The objective of this analysis is to check if the change to this new architecture somehow negatively impacted its performance or if it caused improvements.
+For the purposes of this work, two kinds of evaluations were defined for the simulator: qualitative and performance. The qualitative evaluation concerns itself with evaluating the usability, structure, reusability and other such aspects. In contrast, the performance evaluation consists of measuring its performance when compared to other simulators in similar test scenarios,  Of these two, the qualitative evaluation is arguably most important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. 
 
-In addition to \gls{ecsmos}, two other simulators were selected for the comparison: Vadere and Jupedsim. These were chosen because they are the most robust ones still being updated. Out of the remaining simulators, MomenTUMv2 would also have been a suitable candidate due to how flexible its architecture is. However, the fact that its continued development is uncertain and that it was left in a non-functioning state with no clear indication of which previous version could be considered usable meant that it was decided to remove it from the comparison. Conversely, jCrowdSimulator receives regular updates, but was not considered for this comparison for lacking much of the basic infrastructure of a general simulator and due to its tightly coupled nature.
+In addition to \gls{ecsmos}, two other simulators were selected for the comparison: Vadere and JuPedSim. These were chosen because they are the most robust ones still being updated. Out of the remaining simulators, MomenTUMv2 would also have been a suitable candidate due to how flexible its architecture is. However, the fact that its continued development is uncertain and that it was left in a non-functioning state with no clear indication of which previous version could be considered usable meant that it was decided to remove it from the comparison. Conversely, jCrowdSimulator receives regular updates, but was not considered for this comparison for lacking much of the basic infrastructure of a general simulator and due to its tightly coupled nature.
 
-[Performance scenarios]
+\subsection{Qualitative Evaluation Strategy} \label{sec:qualitative-evaluation}
 
-However, the qualitative evaluation is arguably more important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. For this evaluation, a set of common scenarios seen during development of new models was proposed. \autoref{table:test-scenarios} contains a list of the scenarios. These were designed to test specific aspects of each simulator. However, they also had to be somewhat flexible to avoid hitting specific weak points of the simulators that could be easily avoided by slight shifts in the definition criteria. 
+For qualitative evaluation, a set of common scenarios seen during development of new models was formalized and proposed as test scenarios. \autoref{table:test-scenarios} contains a list of the scenarios. These were designed to test specific aspects of each simulator. However, they also had to be somewhat flexible to avoid hitting specific weak points of the simulators that could be easily avoided by slight shifts in the definition criteria. 
 
 Scenario 1 contains an example of this flexibility. The simulators being evaluated do not all use the same basic pathfinding system. Since what pathfinding systems are available is not an object of study in this dissertation, it was decided to write the scenario in such a way to allow for the use of any one of these. Similar accommodations have been made in the other scenarios. 
 
@@ -477,12 +475,8 @@ Scenarios 1 to 3 test basic situations that are likely to come up during the dev
 
 Scenarios 4 and 6 take aim at features that are less commonly used but that may be hard barriers when it comes to implementation. Some models explicitly consider how an agent makes decisions in a changing environment \cite{DEIULIIS2023104527}, while others include actions that involve things other than movement, such as waiting in line and loitering \cite{KIM2013232, ALAM2022100527}. 
 
-A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
-
-After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
-
 \begin{center}
-  \begin{table}
+  \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
       \hline
       \textnumero & Name & Description & Objective \\ 
@@ -523,8 +517,10 @@ After the scenario definitions, an attempt was made to implement them on each si
   \end{table}
 \end{center}
 
+A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
+
 \begin{center}
-  \begin{table}
+  \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
@@ -571,25 +567,104 @@ After the scenario definitions, an attempt was made to implement them on each si
   \end{table}
 \end{center}
 
-\subsection{Performance Evaluation Results}
+
+After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
+
+\subsection{Performance Evaluation Strategy} \label{sec:performace-evaluation}
+
+When it comes to scientific pedestrian simulation software, performance is often a secondary concern. For many such applications, the total amount of time it takes for the simulator to run is of little concern as long as it does not impede or unreasonably slow down the research process. Considering these factors, the main objective of this evaluation is to measure the general effect of the change in architecture to the performance of the simulated models, not to perform a comprehensive comparison. 
+
+As there are no standard scenarios used for performance comparison, it was necessary to develop new ones. Following the described objective of this evaluation, minimizing the effects of other factors was paramount. Firstly, complicated topologies disadvantage simulators like JuPedSim, which determine base routes via a method that requires polygon triangulation. The more polygons there are in a situation, the slow it is to compute the base paths of pedestrians. On the other hand, large spaces, even if empty, substantially increase the number of computations that simulators like Vadere and ECSMoS require. These factors are independent of architecture and cause non-linear performance drops that can change both depending on the topology and the number of pedestrians in the simulation. As a result, it was decided to create scenarios that minimize these effects.
+
+This evaluation focuses on how each simulator handles an increasing number of pedestrians in a few scenarios. The simulations start with zero agents on the field and increasing amount are added. Once each agent arrives at its objective, they are removed from the simulation. Other than topology, the main factor that varies from simulation scenarios is the frequency with which pedestrians are added, designated $f_p$, measured in $pedestrains/s$, and varying from $0.5$ to $8$. The low values of $f_p$ mimic areas with low but active pedestrian traffic, the intermediary ones slowly go towards saturation and, at high values, the equivalent of traffic jams for pedestrians start to happen.
+
+The Social Forces Model was used for all experiments and the simulator constants were standardized to those seen on \autoref{table:sfm-constantns} or equivalent values in each simulator. These include the calibration constants see on \autoref{eq:pedestrian_repulsion}, \autoref{eq:pedestrian_obstacle} and \autoref{eq:pedestrian_final_speed}. As there is no clear equivalence between the underlying algorithms for computing the shortest path between a pedestrian and its destination, a piece of data crucial for the computation of the motivation force, these have been left at their default values.
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{ | l | c | c | } 
+      \hline
+      Parameter & Value & Unit\\ 
+      \hline 
+      $A_i$ & 2000 & $N$\\
+      \hline
+      $B_i$ & 0.08 & $m$\\
+      \hline
+      $k$ & 120000 & $\frac{kg}{s^2}$\\
+      \hline
+      $\kappa$ & 240000 & $\frac{kg}{m \cdot s}$\\
+      \hline
+      $r_i$ & 0.3 & $m$\\
+      \hline
+      $\tau$ & 0.5 & $s$\\
+      \hline
+      $v_i^0$ & 0.8 & $\frac{m}{s}$\\
+      \hline
+      $m$ & 80 & $kg$\\
+      \hline
+      $\Delta T$ & 0.1 & $s$\\
+      \hline 
+    \end{tabular}
+    \caption{Performance evaluation simulation constants}
+    \label{table:sfm-constantns}
+  \end{center}
+\end{table}
+
+Two scenarios were developed for this evaluation. \autoref{fig:performace_scenario_topologies} display their physical topology. On these figures, black regions represent walls, green represent pedestrians spawners, meaning locations where pedestrians are added with a certain frequency, and red represent destinations, meaning that pedestrians are trying to go there, and they get removed from the simulation once they have arrived. Spawners and destinations are marked with a letter to represent their pairing. So pedestrians from spawner A will attempt to get to destination A.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{.33\textwidth}
+    \centering
+    \includesvg[width=.9\linewidth]{performance_scenario_1.svg}
+    \caption{Scenario 1 -  Bottleneck}
+    \label{fig:sfig1}
+  \end{subfigure}%
+  \begin{subfigure}{.67\textwidth}
+    \centering
+    \includesvg[width=.88\linewidth]{performance_scenario_2.svg}
+    \caption{Scenario 2 - Corridor}
+    \label{fig:sfig1}
+  \end{subfigure}%
+  \caption{Performance Scenario topologies}
+  \label{fig:performace_scenario_topologies}
+\end{figure}
+
+Both of the developed scenarios have a simple topology and small surface area. However, they were created with a basis on actual topologies used during the development of novel pedestrian models. Similar topologies to the ones seen on Scenario 1 are often times used to test whether models display the "Faster-Is-Slower Effect", where an increase in pedestrian speed may actually reduce total throughput when there is a bottleneck on the path. Scenario 2 focuses on lane formation, a situation where pedestrians create lanes of traffic when there are many pedestrians moving in different directions.
+
+Each scenario was measured in terms of how long it takes to simulate the equivalent of 5 minutes in simulation time under various circumstances. This amount of time was chosen because it enough for the low and medium $f_p$ values to reach equilibrium (when the number of pedestrians entering the simulation and leaving is the same), but not enough for the higher values to completely fill the whole simulation area with pedestrians on the higher values. Each scenario was executed 10 times and an average was taken as the result.
+
+% During the development of the qualitative scenarios, it was noticed that small variations on the topology (in some situations only on the order of millimeters) may cause large changes to the total simulation time, specially in more complicated scenarios. This behavior was found on all studied simulators and there is no single cause for this. On some cases the main factor seams to be the pathfinding algorithm, which may make drastic changes to the paths of pedestrians over small changes on topology. On others cases, it is harder to find a specific culprit, as there does not seem to be any appreciable difference in pedestrian movement, but their flow eventually slows down due to the formation of jams in some region. 
+
+% This is why most simulators use some level of randomness.
+
+
+% For the purposes of a user, even large changes to pedestrian path selection are not concerning in most cases because the point of such simulation is the average behavior over multiple run, not the behavior of specific pedestrians or even the paths selected during a single run. All of these simulators also allow the use of randomness in each run. Even considering the cascading nature of these simulations where small changes to one simulation step cause large changes to the following, the trend lines remain consistent. Therefore, this has a minor effect on the quality of the output.
+
+% However, they can have much more noticeable effects when only the performance matters. In this case, where it is desirable to create test environments as replicable as possible, accidentally hitting one of those poor performance sources
+
+% is 
+% As a result of this, a simple comparison of the performance results may have some limitations, as very similar environments can 
+
+% Due to the fact that all evaluated simulators exhibit this behavior and that the analysis of such minutia is not withing the scope of this work, it was decided to use simple scenarios where the behaviors of each simulator were well understood.
 
 \subsection{Qualitative Evaluation Results}
 
-[This section needs a warm-up]
+Following the directives defined in \autoref{sec:qualitative-evaluation}, each scenario was implemented sequentially. In cases where there were examples, extension points or documentation pointing towards a recommended implementation path from the developers, these were followed. When there was no explicit guidance, various approaches were attempted to arrive at the best possible one according to the evaluation criteria defined. Bellow is a description of the results with some additional commentary. A summary of the same can be seen in \autoref{table:qualitative-summary}.
 
 Each simulator had very similar results in scenarios 1, 2, and 3. These are not complicated setups and serve as a comparison basis for the other ones. However, they already reveal some trends that will persist over most of the other scenarios. Firstly, even in basic scenarios, \gls{ecsmos} is more complicated than desired. This is due to how open-ended its architecture is. Because new systems can be added to any particular point in the schedule, it in practice means that it is always somewhat complicated to understand the control flow of the simulator. However, implementing model variations and hybrid models works well, as these can be added on top of existing models easily via the addition of a few systems that work together with the older ones.
 
-Secondly, Jupedsim generally performs worse than the others being studied under these criteria. Such a pattern stems from its highly coupled internal structure. Even in basic scenarios, Jupedsim requires many changes all around the codebase in the form of string comparisons and others that define how execution will go depending on each model. This is most notable in the interface between Python and C++ code, where there are large sections of model-specific code that are executed depending on a sequence of chained conditions.
+Secondly, JuPedSim generally performs worse than the others being studied under these criteria. Such a pattern stems from its highly coupled internal structure. Even in basic scenarios, JuPedSim requires many changes all around the codebase in the form of string comparisons and others that define how execution will go depending on each model. This is most notable in the interface between Python and C++ code, where there are large sections of model-specific code that are executed depending on a sequence of chained conditions.
 
 Finally, Vadere receives a downgrade in reusability scores starting on scenario 2 due to the fact that its pre-existing model implementations have a somewhat limited level of extensibility. With better choices when it comes to how the code is divided or how classes and interfaces are structured, it could cut down on the amount of code duplication significantly.
 
-Scenario 4 introduces more challenges when it comes to flexibility. Both Vadere and Jupedsim suffer on this front, as they assume static environments, which is a reasonable expectation for some simpler situations, but that is not a universal property. Within Vadere, it is still possible to accommodate these with some work, but it will require reengineering some portions of the simulator itself. However, they are basically unimplementable in Jupedsim, as it would require reengineering most of the simulator. In comparison, \gls{ecsmos} handles such things much better. Bevy ECS, provides methods for detecting this kind of changes, and, in many situations, these can be added with little to no modification to the code of the systems themselves. In the situation where changes to the systems are necessary, those are limited and much more predictable. 
+Scenario 4 introduces more challenges when it comes to flexibility. Both Vadere and JuPedSim suffer on this front, as they assume static environments, which is a reasonable expectation for some simpler situations, but that is not a universal property. Within Vadere, it is still possible to accommodate these with some work, but it will require reengineering some portions of the simulator itself. However, they are basically unimplementable in JuPedSim, as it would require reengineering most of the simulator. In comparison, \gls{ecsmos} handles such things much better. Bevy ECS, provides methods for detecting this kind of changes, and, in many situations, these can be added with little to no modification to the code of the systems themselves. In the situation where changes to the systems are necessary, those are limited and much more predictable. 
 
-Scenario 5 causes a reversal in the grades between Vadere and Jupedsim. Vadere's pathfinding algorithm, referred to as floor fields, is much more integrated with the simulator architecture and existing models than Jupedsim's, which uses triangulation to determine the best possible path for each pedestrian. While it is possible to replace floor fields with some other mechanism, it would involve changing much of the simulator code and all current implementations of models, making it impractical. In \gls{ecsmos}, such a thing is perfectly possible. Reuse of code between the current pathfinding system and a new one may be limited, but the architecture will not impose additional challenges, and the changes necessary to allow already existing models to use it are small and concentrated in singular places.
+Scenario 5 causes a reversal in the grades between Vadere and JuPedSim. Vadere's pathfinding algorithm, referred to as floor fields, is much more integrated with the simulator architecture and existing models than JuPedSim's, which uses triangulation to determine the best possible path for each pedestrian. While it is possible to replace floor fields with some other mechanism, it would involve changing much of the simulator code and all current implementations of models, making it impractical. In \gls{ecsmos}, such a thing is perfectly possible. Reuse of code between the current pathfinding system and a new one may be limited, but the architecture will not impose additional challenges, and the changes necessary to allow already existing models to use it are small and concentrated in singular places.
 
-Finally, in scenario 6, Jupedsim performs very well. Its architecture actively expects such behavior, so it is well integrated and quite flexible to changes. While \gls{ecsmos} was not designed with this in mind, this can be accomplished similarly to how hybrid models were implemented in scenario 3. Queuing and loitering work as an extension on top of the already available model. Vadere's implementation in theory could be done in the same way as \gls{ecsmos}'s, but in practice it would require rewriting the whole model to take this into account due to some limits to its extensibility. Therefore, it gets a downgrade in the reusability criteria.
+Finally, in scenario 6, JuPedSim performs very well. Its architecture actively expects such behavior, so it is well integrated and quite flexible to changes. While \gls{ecsmos} was not designed with this in mind, this can be accomplished similarly to how hybrid models were implemented in scenario 3. Queuing and loitering work as an extension on top of the already available model. Vadere's implementation in theory could be done in the same way as \gls{ecsmos}'s, but in practice it would require rewriting the whole model to take this into account due to some limits to its extensibility. Therefore, it gets a downgrade in the reusability criteria.
 
-A summary of the results can be seen in \autoref{table:qualitative-summary}. As the results show, Vadere and \gls{ecsmos} are the best for basic scenarios, with Vadere having a slight edge. Each one has its strong and weak points, but they are generally good choices for implementing a novel pedestrian model that does not take into account more complicated things such as changes to the environment. However, once more involved changes are necessary, \gls{ecsmos} pulls ahead because of its flexibility. In contrast, Jupedsim has generally worse results than these two, with its only standout result on scenario 6.
+As the results in  \autoref{table:qualitative-summary} show, Vadere and \gls{ecsmos} are the best for basic scenarios, with Vadere having a slight edge. Each one has its strong and weak points, but they are generally good choices for implementing a novel pedestrian model that does not take into account more complicated things such as changes to the environment. However, once more involved changes are necessary, \gls{ecsmos} pulls ahead because of its flexibility. In contrast, JuPedSim has generally worse results than these two, with its only standout result on scenario 6.
 
 \begin{center}
   \begin{table}
@@ -598,7 +673,7 @@ A summary of the results can be seen in \autoref{table:qualitative-summary}. As 
       \backslashbox{Scenario}{Simulator} & 
       \multicolumn{3}{|c|}{\gls{ecsmos}} & 
       \multicolumn{3}{|c|}{Vadere} & 
-      \multicolumn{3}{|c|}{Jupedsim} 
+      \multicolumn{3}{|c|}{JuPedSim} 
       \\
       \hline
       &
@@ -651,7 +726,36 @@ A summary of the results can be seen in \autoref{table:qualitative-summary}. As 
   \end{table}
 \end{center}
 
+\subsection{Performance Evaluation Results}
+
+Similarly to the qualitative results, the performance results were very similar for the less demanding cases, while diverging significantly on later ones. \autoref{fig:performace-results} shows us the full results in detail. In that figure, scenarios are identifiable by the shape of the markers used on the graph while each simulator got its own color. The shaded areas around each trend line are the standard deviation of each measurement, which measures the variability of each result.
+
+As it is possible to see, the results for lower values of $f_p$ are very similar across simulators and scenarios. With such low amounts of pedestrians, the base costs of loading a data into memory, pre-processing, post-processing and other fixed costs dominate. There is still some variation, most notably from Vadere, which is written in Java and therefore has a slower general performance than the other ones as Java is not fully compiled, instead it is partially compiled into an intermediary language that then needs to be interpreted. JuPedSim uses Python, a fully interpreted language, but most of its core is written in C++ and the Python wrapper simply serves to give a convenient interface to the user, as it passes execution to the C++ layer immediately.
+
+Starting at $f_p = 3$, no data is available for JuPedSim on scenario 2. At $f_p = 6$, the same becomes true for scenario 1. This is due to a limitation in JuPedSim. As pedestrian densities increase inside the simulation, it is possible in rare circumstances for the repulsive interaction between pedestrians to be so strong that a pedestrian may be going so fast that its position in the next simulation loop goes over the barriers that limit the simulation area, so it appears on the outside. Said behavior is a common error for both simulators and games and stems from a simplification on the collision detection code. Instead of checking if the pedestrians would have to go thought a wall to arrive at a certain position, the code simply checks if there is a wall on the location the agents is going to. At low speeds this approach is sufficient, but it has limited applicability at higher speeds.
+
+Such high speeds are not usually possible for pedestrians in the real world, but similar situations can arise in many models, including the Social Forces Model. A common location for this to happen is around the regions where pedestrians are added. In these locations, a new pedestrian may be added much closer to others that it would be normally possible, creating large forces. Both Vadere and \gls{ecsmos} handle it by using a configurable maximum speed that is well below the threshold where it could cause problems. Since such speeds are physical impossible real-world scenarios, a maximum speed helps the model behave in a more realistic way. However, JuPedSim does not have that check nor does it provide a way to configure it. As a result, even modest densities can overwhelm it in certain situations. It does not happen on all runs, but they become common enough at $f_p = 3$ and $f_p = 6$ that it becomes infeasible gathering representative results.
+
+Vadere and \gls{ecsmos} exhibit an overall quadratic growth in simulation duration as the frequency increases. Although there are many ways to optimize it, the Social Forces Model naturally leads to that kind of growth. Each pedestrian both applies forces to others and receives a reciprocal force from them. These need to be computed for each individual pair of agents, which grows with the square of the number of agents in a simulation. However, at higher frequencies, there is a large difference in performance between the two, but it is hard to quantify how much of this comes from the change in architecture and how much comes from the difference in language. 
+
+The comparing \gls{ecsmos} to JuPedSim is simpler in that aspect, as C++ and Rust have very similar performance profiles \cite{electronics12010143}. In the proposed scenarios, both simulators have near identical performance for the lower frequencies. This could indicate some degree of equivalence between their architectures in terms of performance, but the lack of data for the later runs for JuPedSim means that it is not possible to make reliable assertions on this matter.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{performace_result.png}
+  \caption[Summary of performance results]{Summary of performance results}
+  \label{fig:performace-results}
+\end{figure}
+
 \section{Conclusion} \label{sec:conclusion}
+
+This research aimed to determine the benefits and drawbacks on introducing the \gls{ecs} architecture into the realm of scientific pedestrians simulations with a focus on flexibility. As part of this the area of pedestrian simulations was studied, including currently available pedestrian models and a survey of pedestrians simulators. With this context established, the characteristics of the \gls{ecs} architecture were layout in comparison to the ones used by current simulators. Finally, a novel simulation framework, \gls{ecsmos}, was proposed, developed and compared against some of the most popular pedestrians simulators, Vadere and JuPedSim.
+
+The results of the qualitative analysis show that \gls{ecsmos} is more flexible when compared to the other subjects of study overall, with special highlights in situations that require procedural environment changes, where both of the other simulators face significant challenges. However, this comes at the expense complexity. \gls{ecsmos} is generally more complex than the alternatives on simpler scenarios. This drawback only ever disappears when finer control or flexibility are required. In terms of performance, \gls{ecsmos} is just as or more performant than the alternatives in all studied scenarios. Still, these results are not fully comparable, as there are other significant factors that may affect performance which cannot be isolated.
+
+Based on these results, it is possible to conclude that \gls{ecs} is a viable alternative to currently accepted programming paradigms used in the simulation of pedestrians. Its benefits come in the form of flexibility and control, but they come with drawbacks in terms of required learning for unfamiliar researchers and a generally complex execution flow and debugging procedures. Therefore, it is best used for implementing models that required features which are not currently standard or break the general assumptions when it comes to pedestrian model structure.
+
+Future works in this are should focus on expanding the current simulation core with features necessary for a fully fledged simulator. These may include a better UI, mechanisms for defining scenarios via external files, better data gather, supporting other export formats, and many others. Additionally, it may be possible to use some of the strategies and concepts of \gls{ecs} on other simulators. This path of research may allow researchers to have the benefits of \gls{ecs} without needing to learn a  novel architecture or reimplement existing tools.
 
 \printbibliography
 
