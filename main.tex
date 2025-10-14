@@ -461,6 +461,8 @@ In its current state, \gls{ecsmos} has a simple \gls{ui} that is useful for debu
 
 Like Vadere, \gls{ecsmos} does not have a unified data collection or output mechanism. Both use data collectors, which only store certain fields, and post processors that output the collected data to one or multiple files. In both cases, a trajectory data collector is provided that is able to track the positions of pedestrians and export them in the \gls{csv} format or equivalent. However, more complex data collection may require additional systems to be created.
 
+Finally, \gls{ecsmos} does not currently have a proper external file format for storing scenarios definitions. Therefore, defining a scenario is currently done directly via code. Such as system is possible, but \gls{ecs} creates some additional complexities when it comes to this, most notably in the definition of system dependencies. While this is possible to do, it was not considered inside the scope of the current work.
+
 \section{Evaluation} \label{sec:evaluation}
 
 For the purposes of this work, two kinds of evaluations were defined for the simulator: qualitative and performance. The qualitative evaluation concerns itself with evaluating the usability, structure, reusability and other such aspects. In contrast, the performance evaluation consists of measuring its performance when compared to other simulators in similar test scenarios,  Of these two, the qualitative evaluation is arguably most important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. 
@@ -484,7 +486,7 @@ A simulator's pathfinding algorithm may also have limitations or performance iss
 After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
 
 \begin{center}
-  \begin{table}
+  \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
       \hline
       \textnumero & Name & Description & Objective \\ 
@@ -526,7 +528,7 @@ After the scenario definitions, an attempt was made to implement them on each si
 \end{center}
 
 \begin{center}
-  \begin{table}
+  \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
