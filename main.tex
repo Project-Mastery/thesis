@@ -487,48 +487,6 @@ After the scenario definitions, a study was made in implementing them on each si
 
 \begin{center}
   \begin{table}[h!]
-    \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
-      \hline
-      \textnumero & Name & Description & Objective \\ 
-      \hline
-      1 & 
-      New Model &  
-      Add a new simple model that uses a basic pathfinding system already implemented on the simulator& 
-      Test reusability of basic simulator infrastructure\\
-      \hline
-      2 & 
-      Model variation &  
-      Create a variation of the Social Forces Model available in the simulator with an additional attractive force that guides agents to areas where pedestrians would naturally concentrate, as defined in \cite{helbingSocialForceModel1995}& 
-      Test reusability of existing model implementations when the variation is small\\
-      \hline
-      3 & 
-      Hybrid model &  
-      Create a model based on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account, like those in \cite{Alrashed_Shamma_2020} & 
-      Test general adaptability of already existing models to larger changes\\
-      \hline
-      4 & 
-      Procedural environment changes &  
-      Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
-      Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
-      \hline
-      5 & 
-      Implementing a new pathfinding algorithm &  
-      Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
-      Check the flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
-      \hline
-      6 & 
-      Queuing and loitering&  
-      Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
-      Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
-      \hline
-    \end{tabularx}
-    \caption{List and description of test scenarios.}
-    \label{table:test-scenarios}
-  \end{table}
-\end{center}
-
-\begin{center}
-  \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
@@ -574,6 +532,50 @@ After the scenario definitions, a study was made in implementing them on each si
     \label{table:qualitative-evaluation-criteria}
   \end{table}
 \end{center}
+
+\begin{center}
+  \begin{table}[h!]
+    \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
+      \hline
+      \textnumero & Name & Description & Objective \\ 
+      \hline
+      1 & 
+      New Model &  
+      Add a new simple model that uses a basic pathfinding system already implemented on the simulator& 
+      Test reusability of basic simulator infrastructure\\
+      \hline
+      2 & 
+      Model variation &  
+      Create a variation of the Social Forces Model available in the simulator with an additional attractive force that guides agents to areas where pedestrians would naturally concentrate, as defined in \cite{helbingSocialForceModel1995}& 
+      Test reusability of existing model implementations when the variation is small\\
+      \hline
+      3 & 
+      Hybrid model &  
+      Create a model based on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account, like those in \cite{Alrashed_Shamma_2020} & 
+      Test general adaptability of already existing models to larger changes\\
+      \hline
+      4 & 
+      Procedural environment changes &  
+      Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
+      Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
+      \hline
+      5 & 
+      Implementing a new pathfinding algorithm &  
+      Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
+      Check the flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
+      \hline
+      6 & 
+      Queuing and loitering&  
+      Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
+      Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
+      \hline
+    \end{tabularx}
+    \caption{List and description of test scenarios.}
+    \label{table:test-scenarios}
+  \end{table}
+\end{center}
+
+
 
 
 
@@ -641,20 +643,6 @@ Two scenarios were developed for this evaluation. \autoref{fig:performace_scenar
 Both of the developed scenarios have a simple topology and small surface area. However, they were created with a basis on actual topologies used during the development of novel pedestrian models. Similar topologies to the ones seen in Scenario 1 are oftentimes used to test whether models display the "Faster-Is-Slower Effect", where an increase in pedestrian speed may actually reduce total throughput when there is a bottleneck on the path. Scenario 2 focuses on lane formation, a situation where pedestrians create lanes of traffic when there are many pedestrians moving in different directions.
 
 Each scenario was measured in terms of how long it takes to simulate the equivalent of 5 minutes in simulation time under various circumstances. This amount of time was chosen because it is enough for the low and medium $f_p$ values to reach equilibrium (when the number of pedestrians entering the simulation and leaving is the same), but not enough for the higher values to completely fill the whole simulation area with pedestrians at the higher values. Each scenario was executed 10 times and an average was taken as the result.
-
-% During the development of the qualitative scenarios, it was noticed that small variations on the topology (in some situations only on the order of millimeters) may cause large changes to the total simulation time, specially in more complicated scenarios. This behavior was found on all studied simulators and there is no single cause for this. On some cases the main factor seams to be the pathfinding algorithm, which may make drastic changes to the paths of pedestrians over small changes on topology. On others cases, it is harder to find a specific culprit, as there does not seem to be any appreciable difference in pedestrian movement, but their flow eventually slows down due to the formation of jams in some region. 
-
-% This is why most simulators use some level of randomness.
-
-
-% For the purposes of a user, even large changes to pedestrian path selection are not concerning in most cases because the point of such simulation is the average behavior over multiple run, not the behavior of specific pedestrians or even the paths selected during a single run. All of these simulators also allow the use of randomness in each run. Even considering the cascading nature of these simulations where small changes to one simulation step cause large changes to the following, the trend lines remain consistent. Therefore, this has a minor effect on the quality of the output.
-
-% However, they can have much more noticeable effects when only the performance matters. In this case, where it is desirable to create test environments as replicable as possible, accidentally hitting one of those poor performance sources
-
-% is 
-% As a result of this, a simple comparison of the performance results may have some limitations, as very similar environments can 
-
-% Due to the fact that all evaluated simulators exhibit this behavior and that the analysis of such minutia is not withing the scope of this work, it was decided to use simple scenarios where the behaviors of each simulator were well understood.
 
 \subsection{Qualitative Evaluation Results}
 
