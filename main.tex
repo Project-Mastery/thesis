@@ -97,7 +97,7 @@ As such, pedestrian dynamics are of practical use when creating spaces meant to 
 
 One of the best tools from this area of study comes in the form of simulation models. Computer simulations allow us to check how pedestrians will behave in a certain environment without having to spend time and resources on the construction and evaluations of scale models in the real world. This reduces costs and promotes fast iterative designs that may better align with the requirements of spaces.
 
-There are many models for simulating the flow of pedestrians in an environment. However, designing and implementing models capable of reproducing phenomena seen in the real world is a complicated task. Pedestrian dynamics is an inherently interdisciplinary science [SRC] due to its object of study. It relies on concepts from areas as diverse as physics, engineering, psychology, computer science, and sociology. Simpler models may take into account only the physical part of crowd movement and ignore all else, while others deal with the effects of having people with different ages [SRC], disabilities [SRC] or even states of mind such as calm and panic [SRC].
+There are many models for simulating the flow of pedestrians in an environment. However, designing and implementing models capable of reproducing phenomena seen in the real world is complicated. Pedestrian dynamics is an inherently interdisciplinary science [SRC] due to its object of study. It relies on concepts from areas as diverse as physics, engineering, psychology, computer science, and sociology. Simpler models may take into account only the physical part of crowd movement and ignore all else, while others deal with the effects of having people with different ages [SRC], disabilities [SRC] or even states of mind such as calm and panic [SRC].
 
 When these models are implemented, it is often done on top of an existing simulator or framework. These allow model authors to focus on the most relevant parts of their research while other tasks are handled by code already written and validated by others. Nevertheless, building a model on top of these simulators also comes with certain disadvantages. Their architecture imposes restrictions on how the model can operate, meaning that certain simulators may not be compatible with a model because it breaks one or more of the assumptions made when the simulator was being designed.
 
@@ -171,7 +171,7 @@ where:
   \item[$A$, $B$, $k$, \kappa] are calibration constants
 \end{description}
 
-In practical terms, the repulsive force has two main components: a normal and a perpendicular vector. The normal forces two pedestrians away from each other, increasing depending on how close they are. If the pedestrians are close enough to touch, that force additionally increases by a secondary factor that is dependent on how much they intersect. In this way, the normal component captures both the psychological desire for space and the physical constraints preventing pedestrians from packing too tightly. The perpendicular vector represents sliding forces. When two pedestrians touch, there is some friction between them that acts to slow them down. Friction acts perpendicularly to the normal and against the direction of movement. These forces can be seen in \autoref{fig:repulsive-forces}
+In practical terms, the repulsive force has two main components: a normal and a perpendicular vector. The normal forces two pedestrians away from each other, increasing depending on how close they are. If the pedestrians are close enough to touch, that force additionally increases by a secondary factor that is dependent on how much they intersect. In this way, the normal component captures both the psychological desire for space and the physical constraints preventing pedestrians from packing too tightly. The perpendicular vector represents sliding forces. When two pedestrians touch, there is some friction between them that acts to slow them down. Friction acts perpendicularly to the normal and against the direction of movement. These forces can be seen in \autoref{fig:repulsive-forces}.
 
 \begin{figure}[h]
   \centering
@@ -234,9 +234,14 @@ where:
   \item[$\vec{pos_i}$] is the previous position of $i$
 \end{description}
 
-Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in empirical studies. For example, it replicates the "Faster-Is-Slower Effect", which occurs when the flow rate of pedestrians through an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space [SRC].
+Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in empirical studies. For example, it replicates the "Faster-Is-Slower Effect", which occurs when the flow rate of pedestrians through an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} also reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space [SRC]. An example of what lane formation looks like can on \autoref{fig:lane-formation}.
 
-[Lane formation diagram]
+\begin{figure}[!h]
+  \centering
+  \includesvg{lane_formation.drawio.svg}
+  \caption[Example of lane formation]{Example of lane formation. Each circle represents a pedestrian, the arrows represent their direction of motion. When multiple streams of pedestrian that go on different directions converge in a confined space, pedestrian going to the same destination tend to follow one another, causing the formation of lanes that go in different directions.}
+  \label{fig:lane-formation}
+\end{figure}
 
 \subsection{Existing simulation frameworks} \label{sec:existing-frameworks}
 
@@ -473,10 +478,16 @@ Scenario 1 contains an example of this flexibility. The simulators being evaluat
 
 Scenarios 1 to 3 test basic situations that are likely to come up during the development of most novel models. If they are entirely novel, they would likely go with a path more similar to scenario 1. Models that are mostly based on another but have additional variables/factors would match scenario 2. Lastly, Scenario 3 covers additional implementations that may not cleanly fit into the previous categories.
 
+
+
 Scenarios 4 and 6 take aim at features that are less commonly used but that may be hard barriers when it comes to implementation. Some models explicitly consider how an agent makes decisions in a changing environment \cite{DEIULIIS2023104527}, while others include actions that involve things other than movement, such as waiting in line and loitering \cite{KIM2013232, ALAM2022100527}. 
 
+A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
+
+After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
+
 \begin{center}
-  \begin{table}[h!]
+  \begin{table}
     \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
       \hline
       \textnumero & Name & Description & Objective \\ 
@@ -517,10 +528,8 @@ Scenarios 4 and 6 take aim at features that are less commonly used but that may 
   \end{table}
 \end{center}
 
-A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
-
 \begin{center}
-  \begin{table}[h!]
+  \begin{table}
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
@@ -568,7 +577,7 @@ A simulator's pathfinding algorithm may also have limitations or performance iss
 \end{center}
 
 
-After the scenario definitions, an attempt was made to implement them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
+
 
 \subsection{Performance Evaluation Strategy} \label{sec:performace-evaluation}
 
