@@ -38,7 +38,13 @@ Categoria profissional e o nome da Instituição
 
 \section*{Resumo}
 
-Este resumo não deverá ter uma extensão superior a 500 palavras em  português, inglês ou espanhol.
+The study and simulation of the movement of pedestrians, sometimes referred to as pedestrian dynamics or crowd dynamics, is of fundamental importance in today's world. It is used in many kinds of applications, including the optimization of spaces where large amounts of people pass through every day and the prevention of crowd crushes, stampedes, tramplings, and other similar events.
+
+Currently, the research and development of new models that mimic the behavior of people walking is restricted by the available solutions. Existing pedestrian simulators oftentimes have limitations imposed by their architectures, leading researchers to create their own simulators, which slows down research and limits comparability of results. This dissertation evaluates the utilization of the Entity Component Systems Architecture to improve the flexibility of such software. Additionally, it introduces a new pedestrian simulation framework, ECSMoS, which focuses on solving the flexibility limitations.
+
+To arrive at this result, first it was necessary to study current models. Then, a survey of the available simulators was performed. The strengths and weaknesses of each were noted for later use in the definition of the objectives and testing scenarios of the new simulator. Then, an introduction to the Entity Component Systems Architecture was given and how it may solve the flexibility limitations of current simulators was explained. With these definitions in place, this work defined the requirements for the ECSMoS simulator, explained its structure and compared it to other simulators. 
+
+Results show that, while more complex than the other simulators, ECSMoS is considerably more flexible, especially in situations where the environment is in constant flux. In terms of performance, it was shown that ECSMoS is just as or more performative than other simulators in the evaluated scenarios. 
 
 \section*{Palavras chave}
 
@@ -50,7 +56,13 @@ Cinco palavras chave no máximo.
 
 \section*{Abstract}
 
-Este resumo não deverá ter uma extensão superior a 500 palavras, por regra apresenta-se em inglês. Nos casos em que o documento seja escrito em língua inglesa ou espanhola, o abstract apresenta-se em  português.
+O estudo e a simulação do movimento de pedestres, às vezes chamado dinâmica de pedestres ou dinâmica de multidões, é de fundamental importância no mundo atual. É utilizado em diversos tipos de aplicações, incluindo a otimização de espaços por onde passam grandes quantidades de pessoas diariamente e a prevenção de esmagamentos, tumultos, debandadas e outros eventos semelhantes.
+
+Atualmente, a pesquisa e o desenvolvimento de novos modelos que imitam o comportamento de pessoas andando está restrita pelas soluções disponíveis. Simuladores de pedestres existentes frequentemente possuem limitações impostas por suas arquiteturas, levando pesquisadores a criarem os seus próprios simuladores, o que desacelera a pesquisa e limita a comparabilidade dos resultados. Esta dissertação avalia a utilização da arquitetura de Sistema de Componente e Entidade para melhorar a flexibilidade desse tipo de software. Além disso, introduz um novo simulador de pedestres, o ECSMoS, que foca em resolver as limitações de flexibilidade.
+
+Para alcançar esse resultado, foi necessário, primeiramente, estudar os modelos atuais. Em seguida, realizou-se um levantamento dos simuladores disponíveis. Os pontos fortes e fracos de cada um foram avaliados para uso posterior na definição dos objetivos e dos cenários de teste do novo simulador. Depois, foi feita uma introdução à arquitetura de Sistema de Componente e Entidade e explicado como ela pode resolver as limitações de flexibilidade dos simuladores atuais. Com essas definições estabelecidas, este trabalho definiu os requisitos para o simulador ECSMoS, explicou a sua estrutura e o comparou com outros simuladores.
+
+Os resultados mostram que, embora mais complexo do que os outros simuladores, o ECSMoS é consideravelmente mais flexível, especialmente em situações onde o ambiente está em constante mudança. Em termos de desempenho, foi demonstrado que o ECSMoS tem desempenho tão bom quanto ou ainda melhor do que os outros simuladores nos cenários avaliados.
 
 \section*{Keywords}
 
@@ -110,7 +122,7 @@ The rest of this work is structured as follows: \autoref{sec:overview} provides 
 
 \subsection{Pedestrian models}
 
-Modeling pedestrians is a complicated affair. Humans have both conscious, subconscious and even physical aspects that affect how one moves. Because of this, there are many competing models in use, each one with its own benefits and limitations. There are many ways of categorizing them generally. One of the most common is based on the scale of the entities involved \cite{kleinmeierVadereOpenSourceSimulation2019}. Microscopic models focus on individual pedestrians and their movement, while macroscopic models avoid dealing with interactions between discrete entities, preferring to model the behaviors of whole crowds directly.
+Modeling pedestrians is a complicated affair. Humans have both conscious, subconscious and even physical aspects that affect how one moves. Because of this, there are many competing models in use, each one with its own benefits and limitations. There are many ways of categorizing them generally. However, none of the current ones is descriptive or flexible enough to accommodate the large number of models or their variations. One of the most common is based on the scale of the entities involved \cite{kleinmeierVadereOpenSourceSimulation2019}. Microscopic models focus on individual pedestrians and their movement, while macroscopic models avoid dealing with interactions between discrete entities, preferring to model the behaviors of whole crowds directly.
 
 Another way of categorizing models is proposed by \cite{martinez-gilModelingEvaluationScale2017}, which divides models into the following groups:
 
@@ -124,7 +136,9 @@ Another way of categorizing models is proposed by \cite{martinez-gilModelingEval
 
 However, both kinds of divisions are descriptive, not prescriptive. Models routinely fit into multiple or in between. Where they fall is mostly determined by the requirements and constraints of the model authors. Exotic requirements may lead to models being completely out of these constraints.
 
-This dissertation will focus mostly on the \gls{sfm}, a microscopic mechanics-based model originally proposed in 1995 \cite{helbingSocialForceModel1995}. That is because many implementations of it have been proposed and added in various simulators over the years. Providing an even ground for comparisons between simulators. Its behavior is known and well understood. In particular, the version described in \cite{helbingSimulatingDynamicFeatures2000} will be used, as it is more similar to the implementations present in today's simulators.
+Still, such classification has its uses. For example, cellular automata models and mechanics-based models generally operate with very different modes. Cellular automata models, such as the ones seen on \cite{HUANG2017417}, are generally discrete, meaning that the positions of pedestrians are limited to those of cells on a grid, which has its advantages in terms of performance but may lead to the introduction of some kinds of artifacts to the movement of the agents. In contrast, mechanics-based models tend to be continuous. This makes the movements of its agents more representative of the ones seen in experimental data but comes with its own set of problems.
+
+As a large-scale description and evaluation of the available models is outside the scope of this dissertation, it will focus mostly on the \gls{sfm}, a microscopic mechanics-based model originally proposed in 1995 \cite{helbingSocialForceModel1995}. That is because many implementations of it have been proposed and added in various simulators over the years. Providing a more equitable ground for comparisons between simulators. Its behavior is also known and well understood, meaning that it is easier to identify problems with its implementation. In particular, the version described in \cite{helbingSimulatingDynamicFeatures2000} will be used, as it is more similar to the implementations present in today's simulators.
 
 The \gls{sfm} describes interactions between pedestrians and the environment as forces. Pedestrians are modeled as circles, and, at each point in time, certain forces are applied upon them and are used to compute their acceleration, velocity, and ultimately position. Through careful calibration, these forces can reasonably model the behaviors of people moving. The original model defined three main kinds of forces. However, some implementations may add more forces, taking into consideration other aspects.
 
@@ -481,10 +495,6 @@ Scenarios 1 to 3 test basic situations that are likely to come up during the dev
 
 Scenarios 4 and 6 take aim at features that are less commonly used but that may be hard barriers when it comes to implementation. Some models explicitly consider how an agent makes decisions in a changing environment \cite{DEIULIIS2023104527}, while others include actions that involve things other than movement, such as waiting in line and loitering \cite{KIM2013232, ALAM2022100527}. 
 
-A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
-
-After the scenario definitions, a study was made in implementing them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
-
 \begin{center}
   \begin{table}[h!]
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
@@ -575,10 +585,9 @@ After the scenario definitions, a study was made in implementing them on each si
   \end{table}
 \end{center}
 
+A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
 
-
-
-
+After the scenario definitions, a study was made in implementing them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
 
 \subsection{Performance Evaluation Strategy} \label{sec:performace-evaluation}
 
