@@ -19,8 +19,17 @@
         BoldItalicFont  =   *-BoldItalic
     ] 
 
-    \setmainfont{cambria}[
-        Path            =   ./fonts/cambria/,
+    \newfontfamily\arial{arial}[
+        Path            =   ./fonts/arial/,
+        Extension       =   .ttf,
+        UprightFont     =   *-Regular,
+        BoldFont        =   *-Bold,
+        ItalicFont      =   *-Italic,
+        BoldItalicFont  =   *-BoldItalic
+    ] 
+
+    \setmainfont{arial}[
+        Path            =   ./fonts/arial/,
         Extension       =   .ttf,
         UprightFont     =   *-Regular,
         BoldFont        =   *-Bold,
@@ -69,17 +78,17 @@
 \usepackage{titlesec}
     \titleformat{\section}
     [hang]
-    {\bfseries\Large\trebuc}
+    {\bfseries\Large\arial}
     {\thesection.}{10pt}{}
 
     \titleformat{\subsection}
     [hang]
-    {\bfseries\large\trebuc}
+    {\bfseries\large\arial}
     {\thesubsection }{10pt}{}
 
     \titleformat{\subsubsection}
     [hang]
-    {\bfseries\small\trebuc}
+    {\bfseries\small\arial}
     {\thesubsubsection }{10pt}{}
 
 \usepackage[font=small, labelfont=bf, labelsep=endash]{caption}
@@ -132,7 +141,7 @@
 \newcommand{\mainmatter}{
     \setlength{\parindent}{0.6cm}
     \fancyhead[LE]{\authorheader{Rafael Souza Cotrim}}
-    \fancyhead[RO]{\titleheader{ECSMoS}}
+    \fancyhead[RO]{\titleheader{ECSMoS: An ECS-based Pedestrian Mobility Simulator}}
     \renewcommand{\headrulewidth}{\oldheadrulewidth}
     \pagenumbering{arabic}
 }
@@ -147,12 +156,12 @@
 }
 
 \renewcommand{\title}[1]{
-    \noindent\textbf{\LARGE\trebuc{#1}}
+    \noindent\textbf{\LARGE\arial{#1}}
     
 }
 
 \newcommand{\subtitle}[1]{
-    \noindent\textbf{\Large\trebuc{#1}}
+    \noindent\textbf{\Large\arial{#1}}
 }
 
 \newcommand{\info}[1]{
@@ -172,11 +181,11 @@
 }
 
 \newcommand{\authorheader}[1]{
-    \textcolor{gray}{\scriptsize\trebuc{#1}}
+    \textcolor{gray}{\scriptsize\arial{#1}}
 }
 
 \newcommand{\titleheader}[1]{
-    \textcolor{gray}{\textbf{\scriptsize\trebuc{#1}}}
+    \textcolor{gray}{\textbf{\scriptsize\arial{#1}}}
 }
 
 \newcommand{\pagenumber}[1]{

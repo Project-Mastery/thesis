@@ -391,7 +391,6 @@ YEAR = {2023},
 NUMBER = {1},
 ARTICLE-NUMBER = {143},
 URL = {https://www.mdpi.com/2079-9292/12/1/143},
-ISSN = {2079-9292},
 ABSTRACT = {The rapid growth of the Internet of Things (IoT) and its applications requires high computational efficiency, low-cost, and low-power solutions for various IoT devices. These include a wide range of microcontrollers that are used to collect, process, and transmit IoT data. ESP32 is a microcontroller with built-in wireless connectivity, suitable for various IoT applications. The ESP32 chip is gaining more popularity, both in academia and in the developer community, supported by a number of software libraries and programming languages. While low- and middle-level languages, such as C/C++ and Rust, are believed to be the most efficient, TinyGo and MicroPython are more developer-friendly low-complexity languages, suitable for beginners and allowing more rapid coding. This paper evaluates the efficiency of the available ESP32 programming languages, namely C/C++, MicroPython, Rust, and TinyGo, by comparing their execution performance. Several popular data and signal processing algorithms were implemented in these languages, and their execution times were compared: Fast Fourier Transform (FFT), Cyclic Redundancy Check (CRC), Secure Hash Algorithm (SHA), Infinite Impulse Response (IIR), and Finite Impulse Response (FIR) filters. The results show that the C/C++ implementations were fastest in most cases, closely followed by TinyGo and Rust, while MicroPython programs were many times slower than implementations in other programming languages. Therefore, the C/C++, TinyGo, and Rust languages are more suitable when execution and response time are the key factors, while Python can be used for less strict system requirements, enabling a faster and less complicated development process.},
 DOI = {10.3390/electronics12010143}
 }
@@ -573,4 +572,25 @@ url = {https://www.sciencedirect.com/science/article/pii/S0096300316304325},
 author = {Keke Huang and Xiaoping Zheng and Yuan Cheng and Yeqing Yang},
 keywords = {Pedestrian dynamics, Cooperation, Evacuation time, Self-organization behavior},
 abstract = {Pedestrian evacuation is one open question in a myriad of scientific disciplines and has attracted considerable attention during the past decades. Aim to issue, various research approaches, such as mathematical modeling and simulation, experimental studied and socio-psychology surveys, have been extensively employed. Different from previous frameworks, here a behavior-based cellular automaton model is proposed, which involves the environmental characteristics and neighbors’ behaviors. Given the certain range of degree of emergency, it is shown that enhancing the degree of emergency will shorten evacuation time yet decrease cooperation enthusiasm. The larger the degree of familiarity is, the shorter the evacuation time will be. In variance, larger the dependence of pedestrians will prolong the evacuation time. Besides, the novel model also produces some interesting self-organization phenomena, such as the collective behavior at the beginning of the evacuation and arch-like blocking at the end of the evacuation. When our model is finally applied to the evacuation scenario where a room has two symmetrically located exits, the symmetry breaking effect takes place. Our model may shed new light to the study of pedestrian dynamics in realistic world.}
+}
+
+@phdthesis{satelite,
+    title    = {Designing and Building a Radar Simulation Using the Entity Component System},
+    school   = {Air Force Institute Of Technology},
+    author   = {T. Garland, Brennen},
+    year     = {2021}, %other attributes omitted
+}
+
+@article{HATLEDAL2021102243,
+title = {Vico: An entity-component-system based co-simulation framework},
+journal = {Simulation Modelling Practice and Theory},
+volume = {108},
+pages = {102243},
+year = {2021},
+issn = {1569-190X},
+doi = {https://doi.org/10.1016/j.simpat.2020.102243},
+url = {https://www.sciencedirect.com/science/article/pii/S1569190X20301726},
+author = {Lars I. Hatledal and Yingguang Chu and Arne Styve and Houxiang Zhang},
+keywords = {Co-simulation, Continuous-time simulation, Entity-component-system, Functional mock-up interface, System structure and parameterisation},
+abstract = {This paper introduces a novel co-simulation framework running on the Java Virtual Machine built on a software architecture known as the Entity-Component-System. Popularised by games, this architecture favours composition over inheritance, allowing for greater flexibility. Rather than using a fixed inheritance tree, an entity is defined by its traits, which can be seamlessly changed during simulation. The framework supports the Functional Mock-up Interface standard for co-simulation, as well as the System Structure and Parameterisation standard for defining the system structure. Furthermore, the employed architecture allows users to seamlessly integrate physics engines, plotting, 3D visualisation, co-simulation masters and other types of systems into the framework in a modular way. To show its effectiveness, this paper compares the framework to four similar open-source co-simulation frameworks by simulating a quarter-truck system defined using the System Structure and Parameterisation standard.}
 }
