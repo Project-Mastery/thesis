@@ -111,7 +111,7 @@ There are many  models that have been made for simulating the flow of pedestrian
 
 When these models are implemented, it is often done on top of an existing simulator or framework. These allow model authors to focus on the most relevant parts of their research while other tasks are handled by code already written and validated by others. Nevertheless, building a model on top of these simulators also comes with certain disadvantages. Their architecture imposes restrictions on how the model can operate, meaning that certain simulators may not be compatible with a model because it breaks one or more of the assumptions made when the simulator was being designed. Similarly, the architecture and technologies used by the simulator have an effect on the performance of the simulation. While less impactful than full incompatibility between model and simulator, low performance can slow model development and usage. Larger or more complicated scenarios may take longer than desired to be evaluated or require additional hardware.
 
-While there are many ways of mitigating such problems, using architectures found in other areas, such as \gls{ecs}, offer some benefits. \gls{ecs} is a software architecture sometimes used in game development due to its much stricter flexibility and performance requirements than standard simulators. Developers expect such frameworks to be able to grow as the needs of the project expand and to handle thousands of entities updating multiple times a second. Not only that, but, as this work will show, these benefits can be used in many scenarios, including the study of crowds. Despite this, \gls{ecs} is still very uncommon in the scientific world.
+While there are many ways of mitigating such problems, using architectures found in other areas, such as \gls{ecs}, offer some benefits. \gls{ecs} is a software architecture sometimes used in game development due to its much stricter flexibility and performance requirements than standard simulators. Developers expect such frameworks to be able to grow as the needs of the project expand and to handle thousands of entities updating multiple times a second. Not only that, but, as this work will show, these benefits can be used in many scenarios, including the study of crowds.  There has been some previous work in using ECS in other areas of research, namely in the area of co-simulations \cite{HATLEDAL2021102243} and simulating radars \cite{satelite}. Despite this, ECS is still very uncommon in the scientific world.
 
 With this in mind, this work proposes a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has a focus on being as flexible as possible for model authors while maintaining a high performance. Its main objective is to determine the viability, benefits, and drawbacks of such an architecture in the field of pedestrian simulations. This is done by implementing the core of a novel simulation framework and comparing it to existing simulators in various scenarios.
 
@@ -417,7 +417,7 @@ In addition to the performance benefits, \gls{ecs} promotes adaptable and reusab
 
 Despite these advantages, \gls{ecs} also poses some problems that have limited its acceptance even in the fields where it sees some use. The main one is lack of familiarity of programmers who use \gls{oop} and other common programming paradigms with the design principles it is built upon. For example, while \gls{ecs} can be implemented in \gls{oop}-focused languages, it breaks many of \gls{oop}'s principles. Making effective use of this architecture requires reframing problems to avoid some aspects, such as inheritance and polymorphism. This problem compounds on itself, as the lack of popularity means that, generally speaking, tooling for this architecture is less developed than others and there is less information about it, which naturally perpetuates its status.
 
-\gls{ecs} also has some problems inherent to its structure. Due to the fact that component data is effectively global, tracking down issues caused by improper manipulation of data is hard, as they could come from anywhere. Additionally, observing and understanding the global data is a complicated affair during debugging, as the data for each entity is spread around multiple places and possibly using multiple forms of storage, making it difficult to have a holistic picture of what the system's state is.
+\gls{ecs} also has some problems inherent to its structure. Due to the fact that component data is effectively global, tracking down issues caused by improper manipulation of data is hard, as they could come from anywhere. Additionally, observing and understanding the global data is a complicated affair during debugging, as the data for each entity is spread around multiple places and possibly using multiple forms of storage, making it difficult to have a holistic picture of the system's state.
 
 
 \section{ECSMoS implementation} \label{sec:ecsmos-implementation}
@@ -475,7 +475,27 @@ In its current state, \gls{ecsmos} has a simple \gls{ui} that is useful for debu
 
 Like Vadere, \gls{ecsmos} does not have a unified data collection or output mechanism. Both use data collectors, which only store certain fields, and post processors that output the collected data to one or multiple files. In both cases, a trajectory data collector is provided that is able to track the positions of pedestrians and export them in the \gls{csv} format or equivalent. However, more complex data collection may require additional systems to be created.
 
-Finally, \gls{ecsmos} does not currently have a proper external file format for storing scenario definitions. Therefore, defining a scenario is currently done directly via code. Such a system is possible, but \gls{ecs} creates some additional complexities when it comes to this, most notably in the definition of system dependencies. While this is possible to do, it was not considered inside the scope of the current work.
+Finally, \gls{ecsmos} does not currently have a proper external file format for storing scenario definitions. Therefore, defining a scenario is currently done directly via code. Such a system is possible, but \gls{ecs} creates some additional complexities when it comes to this, most notably in the definition of system dependencies. There are many ways in which this could be accomplished, but it was considered outside the scope of the current work
+
+\autoref{fig:simulator_ui} contains examples of the current UI of the simulator. \autoref{fig:general_ui} shows the general appearance of the simulator. The dots are agents, the circle to the left is their destination, and the rectangle to the right is where they are added to the simulation. On the top left, the counter shows how fast the simulation is going. Each frame is the equivalent of a simulation step. Figure \autoref{fig:vector_field} shows one of the many debug visualization modes. The one on display shows a field of vectors that point to the direction in which a pedestrian would go if it were in that location. Other debug modes include visualization of proximity to the target destination, collision zones, and statistical density of pedestrians. These modes are very useful for understanding the inner workings of the implemented model, but they impose a significant performance penalty.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{simulator_working.png}
+    \caption{General \gls{ecsmos} \gls{ui}}
+    \label{fig:general_ui}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{vector_field.png}
+    \caption{Vector field \gls{ui}}
+    \label{fig:vector_field}
+  \end{subfigure}%
+  \caption{\gls{ecsmos}} interface
+  \label{fig:simulator_ui}
+\end{figure}
 
 \section{Evaluation} \label{sec:evaluation}
 
@@ -491,12 +511,56 @@ Scenario 1 contains an example of this flexibility. The simulators being evaluat
 
 Scenarios 1 to 3 test basic situations that are likely to come up during the development of most novel models. If they are entirely novel, they would likely go with a path more similar to scenario 1. Models that are mostly based on another but have additional variables/factors would match scenario 2. Lastly, Scenario 3 covers additional implementations that may not cleanly fit into the previous categories.
 
-
-
 Scenarios 4 and 6 take aim at features that are less commonly used but that may be hard barriers when it comes to implementation. Some models explicitly consider how an agent makes decisions in a changing environment \cite{DEIULIIS2023104527}, while others include actions that involve things other than movement, such as waiting in line and loitering \cite{KIM2013232, ALAM2022100527}. 
+
+A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
+
+After the scenario definitions, a study was made in implementing them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
 
 \begin{center}
   \begin{table}[h!]
+    \begin{tabularx}{\textwidth}{ | l | p{2.5cm}| X | p{5cm} | } 
+      \hline
+      \textnumero & Name & Description & Objective \\ 
+      \hline
+      1 & 
+      New Model &  
+      Add a new simple model that uses a basic pathfinding system already implemented on the simulator& 
+      Test reusability of basic simulator infrastructure\\
+      \hline
+      2 & 
+      Model \linebreak variation &  
+      Create a variation of the \gls{sfm} available in the simulator with an additional attractive force that guides agents to areas where pedestrians would naturally concentrate, as defined in \cite{helbingSocialForceModel1995}& 
+      Test reusability of existing model implementations when the variation is small\\
+      \hline
+      3 & 
+      Hybrid model &  
+      Create a model based on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account, like those in \cite{Alrashed_Shamma_2020} & 
+      Test general adaptability of already existing models to larger changes\\
+      \hline
+      4 & 
+      Procedural \linebreak environment \linebreak changes &  
+      Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
+      Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
+      \hline
+      5 & 
+      New \linebreak pathfinding \linebreak algorithm &  
+      Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
+      Check the flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
+      \hline
+      6 & 
+      Queuing \linebreak and \linebreak loitering&  
+      Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
+      Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
+      \hline
+    \end{tabularx}
+    \caption{List and description of test scenarios.}
+    \label{table:test-scenarios}
+  \end{table}
+\end{center}
+
+\begin{center}
+  \begin{table}
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
@@ -542,52 +606,6 @@ Scenarios 4 and 6 take aim at features that are less commonly used but that may 
     \label{table:qualitative-evaluation-criteria}
   \end{table}
 \end{center}
-
-\begin{center}
-  \begin{table}[h!]
-    \begin{tabularx}{\textwidth}{ | l | p{3.7cm}| X | p{5cm} | } 
-      \hline
-      \textnumero & Name & Description & Objective \\ 
-      \hline
-      1 & 
-      New Model &  
-      Add a new simple model that uses a basic pathfinding system already implemented on the simulator& 
-      Test reusability of basic simulator infrastructure\\
-      \hline
-      2 & 
-      Model variation &  
-      Create a variation of the Social Forces Model available in the simulator with an additional attractive force that guides agents to areas where pedestrians would naturally concentrate, as defined in \cite{helbingSocialForceModel1995}& 
-      Test reusability of existing model implementations when the variation is small\\
-      \hline
-      3 & 
-      Hybrid model &  
-      Create a model based on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account, like those in \cite{Alrashed_Shamma_2020} & 
-      Test general adaptability of already existing models to larger changes\\
-      \hline
-      4 & 
-      Procedural environment changes &  
-      Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
-      Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
-      \hline
-      5 & 
-      Implementing a new pathfinding algorithm &  
-      Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
-      Check the flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
-      \hline
-      6 & 
-      Queuing and loitering&  
-      Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
-      Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
-      \hline
-    \end{tabularx}
-    \caption{List and description of test scenarios.}
-    \label{table:test-scenarios}
-  \end{table}
-\end{center}
-
-A simulator's pathfinding algorithm may also have limitations or performance issues. These algorithms are used to compute what path the pedestrians would attempt to take if the other agents around them were static and, for the \acrlong{sfm}, are used as a basis for the driving force. Vadere and \gls{ecsmos} use similar implementations that work well for the \gls{sfm} but that generally have worse performance for cellular automata models \cite{kleinmeierVadereOpenSourceSimulation2019}. As such, it may be necessary to change them under some set of circumstances. Scenario 5 tests that change.
-
-After the scenario definitions, a study was made in implementing them on each simulator. Implementations were then graded according to three metrics: implementability (meaning ease of implementation), reusability, and complexity. These grades were given on a three-level scale, going from poor to good. The details of each level are described in \autoref{table:qualitative-evaluation-criteria}. In summary, a grade of "good" indicates that a simulator can easily handle the implementation of the scenario. Its architecture poses minimal challenges in regard to that criteria. Conversely, a grade of "poor" implies significant challenges, to the point that it may not be feasible to implement the scenario. Finally, a grade of "fair" indicates that there are some challenges, but these are possible to circumvent with a reasonable level of effort.
 
 \subsection{Performance Evaluation Strategy} \label{sec:performace-evaluation}
 
@@ -744,7 +762,7 @@ Such high speeds are not usually possible for pedestrians in the real world, but
 
 Vadere and \gls{ecsmos} exhibit an overall quadratic growth in simulation duration as the frequency increases. Although there are many ways to optimize it, the Social Forces Model naturally leads to that kind of growth. Each pedestrian both applies forces to others and receives a reciprocal force from them. These need to be computed for each individual pair of agents, which grows with the square of the number of agents in a simulation. However, at higher frequencies, there is a large difference in performance between the two, but it is difficult to quantify how much of this comes from the change in architecture and how much comes from the difference in language. 
 
-The comparing \gls{ecsmos} to JuPedSim is simpler in that aspect, as C++ and Rust have very similar performance profiles \cite{electronics12010143}. In the proposed scenarios, both simulators have near identical performance for the lower frequencies. This could indicate some degree of equivalence between their architectures in terms of performance, but the lack of data for the later runs for JuPedSim means that it is not possible to make reliable assertions on this matter.
+Comparing \gls{ecsmos} to JuPedSim is simpler in that aspect, as C++ and Rust have very similar performance profiles \cite{electronics12010143}. In the proposed scenarios, both simulators have near identical performance for the lower frequencies. This could indicate some degree of equivalence between their architectures in terms of performance, but the lack of data for the later runs for JuPedSim means that it is not possible to make reliable assertions on this matter.
 
 \begin{figure}
   \centering
