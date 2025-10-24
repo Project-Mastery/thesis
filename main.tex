@@ -8,7 +8,7 @@
 \blankpage
 \newpage
 
-\section*{Composição do Juri}
+\section*{Composição do Júri}
 
 \noindent Presidente do júri
 
@@ -72,7 +72,7 @@ Cinco palavras chave no máximo.
 \null                % Create an empty box (no content)
 \newpage             % Move to the next page
 
-\printglossary[type=\acronymtype,nonumberlist, title=List of Abbreviations]
+\printglossary[type=\acronymtype,nogroupskip=true,nonumberlist, title=List of Abbreviations]
 
 \clearpage            % Ensure all floats and content are flushed
 \null                % Create an empty box (no content)
@@ -105,20 +105,39 @@ Cinco palavras chave no máximo.
 
 Pedestrian dynamics is an area of study focused on understanding the movement of pedestrians, which often happens as crowds. Such studies can take the form of an analysis of data collected from studying the movements of people in the real world \cite{adrianCrowdsFrontBottlenecks2020}, proposition and evaluation of methods for modeling crowd behavior \cite{vonkruchtenEmpiricalStudySocial2017}, predicting movement patterns in certain spaces \cite{10181234}, among others. They may also take into account other factors, such as vehicles \cite{liangUnravelingCausesSeoul2024} and changes to the environment \cite{helbingSimulatingDynamicFeatures2000}. As such, pedestrian dynamics are of practical use when creating spaces meant to be utilized by people. A better understanding of how people move through a structure may aid during the design phase of a building, allowing for better planning of fire escape routes \cite{kouskoulisSystematicReviewPedestrian2017}. Similarly, not taking into account how people will behave may turn concerts or other large events into deadly crowd crushes and increase the number of trampling incidents \cite{barrStampedesNewPsychology2024}. Finally, even when there is little risk of loss of life, they may still be useful for increasing the throughput of infrastructure such as train stations, airports, and others \cite{tesoriereModellingSimulationPassenger2018}.
 
-One of the best tools from this area of study comes in the form of simulation models. Computer simulations allow us to check how pedestrians will behave in a certain environment without having to spend time and resources on the construction and evaluations of scale models in the real world. This reduces costs and promotes fast iterative designs that may better align with the requirements of spaces. It also bypasses ethical considerations that arise when attempting to replicate crowd crushes and other deadly situations for research. Study about these can happen via the records of past events, but these are limited as these rarely happen under circumstances where data can be effectively collected. For these scenarios, simulations are some of the only ways to gather more profound insight.
+One of the best tools from this area of study comes in the form of simulation models \cite{8718399}. Computer simulations allow us to check how pedestrians will behave in a certain environment without having to spend time and resources on the construction and evaluations of scale models in the real world. This reduces costs and promotes fast iterative designs that may better align with the requirements of spaces. It also bypasses ethical considerations that arise when attempting to replicate crowd crushes and other deadly situations for research. Study about these can happen via the records of past events, but these are limited as these rarely happen under circumstances where data can be effectively collected. For these scenarios, simulations are some of the only ways to gather more profound insight.
 
-There are many  models that have been made for simulating the flow of pedestrians in an environment. However, designing and implementing models capable of reproducing phenomena seen in the real world is complicated. Pedestrian dynamics is an inherently interdisciplinary science \cite{kleinmeierVadereOpenSourceSimulation2019} due to its object of study. It relies on concepts from areas as diverse as physics, engineering, psychology, computer science, and sociology. Simpler models may take into account only the physical part of crowd movement and ignore all else, while others deal with the effects of having people with different ages \cite{gorriniAgeGroupdrivenPedestrian2016}, disabilities \cite{fuExperimentalStudyBidirectional2022} or even states of mind such as calm and panic \cite{Alrashed_Shamma_2020}.
+There are many  models that have been made for simulating the flow of pedestrians in an environment \cite{kouskoulisSystematicReviewPedestrian2017}. However, designing and implementing models capable of reproducing phenomena seen in the real world is complicated. Pedestrian dynamics is an inherently interdisciplinary science due to its object of study \cite{kleinmeierVadereOpenSourceSimulation2019}. It relies on concepts from areas as diverse as physics, engineering, psychology, computer science, and sociology. Simpler models may take into account only the physical part of crowd movement and ignore all else, while others deal with the effects of having people with different ages \cite{gorriniAgeGroupdrivenPedestrian2016}, disabilities \cite{fuExperimentalStudyBidirectional2022} or even states of mind such as calm and panic \cite{Alrashed_Shamma_2020}.
 
 When these models are implemented, it is often done on top of an existing simulator or framework. These allow model authors to focus on the most relevant parts of their research while other tasks are handled by code already written and validated by others. Nevertheless, building a model on top of these simulators also comes with certain disadvantages. Their architecture imposes restrictions on how the model can operate, meaning that certain simulators may not be compatible with a model because it breaks one or more of the assumptions made when the simulator was being designed. Similarly, the architecture and technologies used by the simulator have an effect on the performance of the simulation. While less impactful than full incompatibility between model and simulator, low performance can slow model development and usage. Larger or more complicated scenarios may take longer than desired to be evaluated or require additional hardware.
 
-While there are many ways of mitigating such problems, using architectures found in other areas, such as \gls{ecs}, offer some benefits. \gls{ecs} is a software architecture sometimes used in game development due to its much stricter flexibility and performance requirements than standard simulators. Developers expect such frameworks to be able to grow as the needs of the project expand and to handle thousands of entities updating multiple times a second. Not only that, but, as this work will show, these benefits can be used in many scenarios, including the study of crowds.  There has been some previous work in using ECS in other areas of research, namely in the area of co-simulations \cite{HATLEDAL2021102243} and simulating radars \cite{satelite}. Despite this, ECS is still very uncommon in the scientific world.
+While there are many ways of mitigating such problems, using architectures found in other areas, such as \gls{ecs}, offer some benefits \cite{ecs}. \gls{ecs} is a software architecture sometimes used in game development due to its much stricter flexibility and performance requirements than standard simulators. Developers expect such frameworks to be able to grow as the needs of the project expand and to handle thousands of entities updating multiple times a second. Not only that, but, as this work will show, these benefits can be used in many scenarios, including the study of crowds.  There has been some previous work in using ECS in other areas of research, namely in the area of co-simulations \cite{HATLEDAL2021102243} and simulating radars \cite{satelite}. Despite this, ECS is still very uncommon in the scientific world.
 
 With this in mind, this work proposes a new simulation framework for pedestrian dynamics: \gls{ecsmos}. This simulator is based on the \gls{ecs} architecture and has a focus on being as flexible as possible for model authors while maintaining a high performance. Its main objective is to determine the viability, benefits, and drawbacks of such an architecture in the field of pedestrian simulations. This is done by implementing the core of a novel simulation framework and comparing it to existing simulators in various scenarios.
 
+\subsection{Planning}
+
+The work required to complete this dissertation was divided into the tasks below. Tasks 1-4 were done sequentially, while task 5 was done in parallel with all the others.
+
+\begin{enumerate}
+  \item Study the current state of pedestrian simulations with a focus on the models used
+  \item Research 
+  \begin{enumerate}
+    \item Reserch of existing simulation frameworks used in the area of pedestrian simulations  
+    \item Research of current tools and frameworks used for implementing the ECS architecture
+  \end{enumerate}
+  \item Proposal and implementation of novel simulation framework
+  \item Perform a comparative analysis of the new framework and existing ones in terms of performance and flexibility
+  \item Writing and editing the final text of the dissertation
+\end{enumerate}
+
+\subsection{Document structure}
 
 The rest of this work is structured as follows: \autoref{sec:overview} provides an overview of existing pedestrian simulation models, how they operate, and what simulation frameworks are available. \autoref{sec:ecs-architecture} talks about the details of the \gls{ecs} architecture, its benefits, and its drawbacks. \autoref{sec:ecsmos-implementation} goes over the details of how \gls{ecsmos} was implemented. \autoref{sec:evaluation} defines the evaluation criteria used to validate \gls{ecsmos} and compares it to other simulators. Finally, \autoref{sec:conclusion} provides the final remarks of the work done and concludes this dissertation.
 
 \section{Current state of pedestrian modeling and simulation} \label{sec:overview}
+
+Before creating a simulator itself or working on the comparison with available alternatives, it was first necessary to understand pedestrian simulations. This chapter contains a distilled form of the insights gathered during the research process.
 
 \subsection{Pedestrian models}
 
@@ -245,7 +264,7 @@ where:
   \item[$\vec{pos_i}$] is the previous position of $i$
 \end{description}
 
-Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in empirical studies. For example, it replicates the "Faster-Is-Slower Effect", which occurs when the flow rate of pedestrians through an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} also reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space \cite{PhysRevE.94.032304}. An example of what lane formation looks like can on \autoref{fig:lane-formation}.
+Despite its relative simplicity, this model is quite robust and is capable of replicating certain phenomena that are seen in empirical studies. For example, it replicates the "Faster-Is-Slower Effect", which occurs when the flow rate of pedestrians through an obstruction paradoxically decreases once a certain speed is surpassed \cite{helbingSimulatingDynamicFeatures2000}. The \gls{sfm} also reproduces lane formation, which is when pedestrians form lanes of people going in the same direction when two streams of people converge in a limited space \cite{PhysRevE.94.032304}. An example of what lane formation looks like can be seen on \autoref{fig:lane-formation}.
 
 \begin{figure}[!h]
   \centering
@@ -275,7 +294,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 
 \textbf{jCrowdSimulator} is a pedestrian simulator written in Java and maintained by the Fraunhofer Institute for Transport and Infrastructure Systems \cite{meinert2019simulation}. It can be used in the form of a library or as a stand-alone application. Currently, it only implements the social forces model and its implementation is tightly coupled to the rest of the simulator, meaning that adding new models can be a challenge.
 
-\textbf{JuPedSim} is a Python package with a C++ core for simulating pedestrian dynamics. Despite not having a \gls{ui} \cite{kemlohwagoumJuPedSimOpenFramework2015}, JuPedSim is simple to use. It also includes various modules for flow/density analysis, image generation, 2D or 3D animations, reporting, and geometry generation. Model implementation is divided into three levels. (1) Tactical: route choice and short-term decisions. (2) Strategic: Long-term decisions and general objectives. (3) Operational: How to perform each action. JuPedSim can be executed inside Jupyter Notebooks for a more interactive experience. While extremely flexible for users, the fact that its codebase is split between languages and that its internal structure is tightly bound to the implemented models poses problems for developers.
+\textbf{JuPedSim} is a Python package with a C++ core for simulating pedestrian dynamics \cite{kemlohwagoumJuPedSimOpenFramework2015}. Despite not having a \gls{ui}, JuPedSim is simple to use. It also includes various modules for flow/density analysis, image generation, 2D or 3D animations, reporting, and geometry generation. Model implementation is divided into three levels. (1) Tactical: route choice and short-term decisions. (2) Strategic: Long-term decisions and general objectives. (3) Operational: How to perform each action. JuPedSim can be executed inside Jupyter Notebooks for a more interactive experience. While extremely flexible for users, the fact that its codebase is split between languages and that its internal structure is tightly bound to the implemented models poses problems for developers.
 
 \textbf{Menge} is a modular framework for simulating crowd movement that decomposes the problem of how to simulate human movement into four main tasks \cite{curtisMengeModularFramework2016}. (1) Goal selection: Deciding what each pedestrian wants to achieve. (2) Plan computation: deciding on a strategy to achieve a pedestrian's objective. (3) Plan adaptation: Adapt the original plan to the current local environment of the pedestrian. (4) Spatial queries: How to retrieve data around a certain point and decide what kinds of data are useful. \autoref{fig:menge_architecture} provides some additional detail on how these parts interact. To add a new model to the simulator, it is necessary to break it down into these four components while also obeying the other interface restrictions. If the new model is similar enough to another in one of these areas, it is possible to reuse that part of the implementation. However, implementing models that do not fit well into these divisions can be challenging. Menge includes a \gls{ui} and various examples of its basic features. However, its last stable version was released in 2017 and all development stopped in 2019.
 
@@ -342,15 +361,15 @@ Finally, there are other libraries such as \textbf{Mesa} \cite{hoevenMesa3Agentb
 
 Despite the variety of available tools, most of these are only compatible with a subset of models. Menge has a well-defined structure that facilitates development, but it only works well when a model can be split into its four types of tasks. Vadere and JuPedSim are very popular in general. However, their internal architecture is too monolithic, preventing code from being effectively shared between pre-existing models and new implementations. MomenTUMv2 is possibly the most modular. However, this is achieved via a lot of complexity within its architecture. Finally, libraries like Agents.jl are very capable of adapting themselves to many different kinds of models but lack any infrastructure for pedestrian  simulations specifically.
 
-As a result of these limitations, many researchers in the field end up creating their own purpose built simulations. This makes comparison much harder, as certain implementation specificities can have impacts that are difficult to predict and take into account in a comparison. Removing these limitations could greatly improve comparability and convenience for model authors.
+As a result of these limitations, many researchers in the field end up creating their own purpose-built simulations. This makes comparison much harder, as certain implementation specificities can have impacts that are difficult to predict and take into account in a comparison. Removing these limitations could greatly improve comparability and convenience for model authors and one of the possible ways of doing this is by using \gls{ecs}.
 
 \section{The \acrlong{ecs} architecture} \label{sec:ecs-architecture}
 
-The \gls{ecs} architecture is a data-oriented design pattern or framework sometimes used in the game development industry due to its flexibility, modularity, and high performance. However, it is difficult to find concrete statistics when it comes to its use, as most games are closed source and their inner workings are not widely discussed. It also has a loose definition and is sometimes confused with other similar software architectures that are also common in the area, most notably \gls{ec}. Additionally, the various implementations can be substantially different due to their underlying technologies and objectives. Finally, there are few academic sources for this topic. Most works on this subject are blogs, videos, and personal anecdotes. Because of these factors, this section will discuss the most common aspects of the \gls{ec} architecture, saving details of the specific implementation used for \gls{ecsmos} discussed in \autoref{sec:ecsmos-implementation}. Nevertheless, this architecture has the potential of addressing many of the problems raised in \autoref{sec:existing-frameworks} and merits further exploration.
+The \gls{ecs} architecture is a data-oriented design pattern or framework sometimes used in the game development industry due to its flexibility, modularity, and high performance \cite{ecs}. However, it is difficult to find concrete statistics when it comes to its use, as most games are closed source and their inner workings are not widely discussed. It also has a loose definition and is sometimes confused with other similar software architectures that are also common in the area, most notably \gls{ec}. Additionally, the various implementations can be substantially different due to their underlying technologies and objectives. Finally, there are few academic sources for this topic. Most works on this subject are blogs, videos, and personal anecdotes. Because of these factors, this section will discuss the most common aspects of the \gls{ec} architecture, saving details of the specific implementation used for \gls{ecsmos} discussed in \autoref{sec:ecsmos-implementation}. Nevertheless, this architecture has the potential of addressing many of the problems raised in \autoref{sec:existing-frameworks} and merits further exploration.
 
 \subsection{General structure}
 
-Generally speaking, in an \gls{ecs} implementation, most things are divided into the following three main kinds of concepts: 
+Generally speaking, in an \gls{ecs} implementation, most elements are divided into the following three main kinds of concepts: 
 
 \textbf{Entities} represent general objects in the world. For example, in a crowd simulation, each pedestrian would be an entity, but so would obstacles and other things that might affect them. Usually, they consist of a simple identifier that can be used to group other kinds of data. Entities usually do not carry additional data, but many implementations allow entities to be "disabled", meaning that they are not used/visible to other parts of the architecture.
 
@@ -428,7 +447,7 @@ The main technological choice for the implementation of \gls{ecsmos} was the spe
 
 In addition to the standard \gls{ecs} constituents of entities, components, and systems, Bevy also provides a few more features. \textbf{Schedules} serve as management units for systems. They defined what systems are executed, what their execution order is, and under what conditions they are active. \textbf{System Sets} are system organizational units. They can be used to group systems that have similar functions or by any other differentiating factor. \textbf{Resources} are a way of storing data globally without association with a specific entity and are useful for representing global state. Bevy also has a built-in \textbf{Events} framework, which allows communication between systems without needing to update components. Finally, Bevy has an advanced change detection method and developers are able to use that to only execute certain systems when certain components are added or changed, reducing computational load. These and many other features are all fully compatible with the Bevy's parallelization mechanisms, allowing full use of multithreaded hardware.
 
-\subsection{ECSMoS Structure}
+\subsection{ECSMoS structure}
 
 To improve organization and effectively provide a division of concerns, \gls{ecsmos} is built out of modules, which are built on top of what Bevy calls plugins. Each module can add its own systems, resources, components, etc., to the simulation. Modules are not executed in any particular order. Each of their systems can individually be configured to be executed before or after others. In cases where modules have a dependency on one another, meaning that a system in module A must be executed after a system in module B, system sets can be used to define this dependency behavior.
 
@@ -499,11 +518,11 @@ Finally, \gls{ecsmos} does not currently have a proper external file format for 
 
 \section{Evaluation} \label{sec:evaluation}
 
-For the purposes of this work, two kinds of evaluations were defined for the simulator: qualitative and performance. The qualitative evaluation concerns itself with evaluating the usability, structure, reusability and other such aspects. In contrast, the performance evaluation consists of measuring its performance when compared to other simulators in similar test scenarios,  Of these two, the qualitative evaluation is arguably the most important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. 
+For the purposes of this work, two kinds of evaluations were defined for the simulator: qualitative and performance. The qualitative evaluation concerns itself with evaluating the usability, structure, reusability and other such aspects. In contrast, the performance evaluation consists of measuring its performance when compared to other simulators in similar test scenarios.  Of these two, the qualitative evaluation is arguably the most important. It focuses on comparing the capabilities of the simulators when it comes to the implementation of new models and adaptation of already existing ones. As such, it touches on the main objective of this project: flexibility. 
 
 In addition to \gls{ecsmos}, two other simulators were selected for the comparison: Vadere and JuPedSim. These were chosen because they are the most robust ones still being updated. Out of the remaining simulators, MomenTUMv2 would also have been a suitable candidate due to how flexible its architecture is. However, the fact that its continued development is uncertain and that it was left in a non-functioning state with no clear indication of which previous version could be considered usable meant that it was decided to remove it from the comparison. Conversely, jCrowdSimulator receives regular updates but was not considered for this comparison for lacking much of the basic infrastructure of a general simulator and due to its tightly coupled nature.
 
-\subsection{Qualitative Evaluation Strategy} \label{sec:qualitative-evaluation}
+\subsection{Qualitative evaluation strategy} \label{sec:qualitative-evaluation}
 
 For qualitative evaluation, a set of common scenarios seen during the development of new models was formalized and proposed as test scenarios. \autoref{table:test-scenarios} contains a list of the scenarios. These were designed to test specific aspects of each simulator. However, they also had to be somewhat flexible to avoid hitting specific weak points of the simulators that could be easily avoided by slight shifts in the definition criteria. 
 
@@ -575,7 +594,8 @@ After the scenario definitions, a study was made in implementing them on each si
       \hline
       Implementability & Poor & 
       Simulator lacks extension points for this scenario, requires deep internal changes or requires modification to parts of its code that would be very difficult to decouple. Implementation is slow, messy or may not be feasible.
-      \\ 
+      \\
+      \hline
       \hline
       Reusability & Good & 
       Existing code can easily be reused in this scenario. The related models, utility methods, etc. are  generic, have good abstractions, and are composed of easily swappable units.
@@ -588,6 +608,7 @@ After the scenario definitions, a study was made in implementing them on each si
       Reusability & Poor & 
       Simulator components are hard-coded or specialized for specific agents or scenarios. Implementing the scenario requires rewriting or duplicating most, if not all, of a model or internal system to operate. 
       \\ 
+      \hline
       \hline
       Complexity & Good & 
       Implementing the scenario is possible with minimal cognitive effort. The changes are well isolated, have logical continuity, touch as few other systems and the data/execution path they follow is direct and predictable.
@@ -607,7 +628,7 @@ After the scenario definitions, a study was made in implementing them on each si
   \end{table}
 \end{center}
 
-\subsection{Performance Evaluation Strategy} \label{sec:performace-evaluation}
+\subsection{Performance evaluation strategy} \label{sec:performace-evaluation}
 
 When it comes to scientific pedestrian simulation software, performance is often a secondary concern. For many such applications, the total amount of time it takes for the simulator to run is of little concern as long as it does not impede or unreasonably slow down the research process. Considering these factors, the main objective of this evaluation is to measure the general effect of the change in architecture to the performance of the simulated models, not to perform a comprehensive comparison. 
 
@@ -671,7 +692,7 @@ Both of the developed scenarios have a simple topology and small surface area. H
 
 Each scenario was measured in terms of how long it takes to simulate the equivalent of 5 minutes in simulation time under various circumstances. This amount of time was chosen because it is enough for the low and medium $f_p$ values to reach equilibrium (when the number of pedestrians entering the simulation and leaving is the same), but not enough for the higher values to completely fill the whole simulation area with pedestrians at the higher values. Each scenario was executed 10 times and an average was taken as the result.
 
-\subsection{Qualitative Evaluation Results}
+\subsection{Qualitative evaluation results}
 
 Following the directives defined in \autoref{sec:qualitative-evaluation}, each scenario was implemented sequentially. In cases where there were examples, extension points or documentation pointing towards a recommended implementation path from the developers, these were followed. When there was no explicit guidance, various approaches were attempted to arrive at the best possible one according to the evaluation criteria defined. Below is a description of the results with some additional commentary. A summary of the same can be seen in \autoref{table:qualitative-summary}.
 
@@ -750,7 +771,7 @@ Finally, in scenario 6, JuPedSim performs very well. Its architecture actively e
 As the results in  \autoref{table:qualitative-summary} show, Vadere and \gls{ecsmos} are the best for basic scenarios, with Vadere having a slight edge. Each one has its strong and weak points, but they are generally good choices for implementing a novel pedestrian model that does not take into account more complicated things such as changes to the environment. However, once more involved changes are necessary, \gls{ecsmos} pulls ahead because of its flexibility. In contrast, JuPedSim has generally worse results than these two, with its only standout result on scenario 6.
 
 
-\subsection{Performance Evaluation Results}
+\subsection{Performance evaluation results}
 
 Similarly to the qualitative results, the performance results were very similar for the less demanding cases, while diverging significantly on later ones. \autoref{fig:performace-results} shows us the full results in detail. In that figure, scenarios are identifiable by the shape of the markers used on the graph, while each simulator got its own color. The shaded areas around each trend line are the standard deviation of each measurement, which measures the variability of each result.
 
