@@ -812,16 +812,11 @@ Similarly to the qualitative results, the performance results were very similar 
 
 As can be observed, the performance across simulators and scenarios is very similar for lower values of $f_p$. With such low pedestrian densities, the base costs of loading data into memory, pre-processing, and post-processing dominate the overall runtime. Some variation remains, most notably from Vadere, which is written in Java and therefore exhibits comparatively slower performance, as Java is not fully compiled but instead partially compiled into an intermediate language that must be interpreted at runtime. JuPedSim, which uses Python, a fully interpreted language, has higher performance because the core computations are implemented in C++. Python is mostly used as a wrapper for a convenient interface that delegates execution directly to the C++ layer.
 
-
-
 Starting at $f_p = 3$, no data is available for JuPedSim in Scenario 2, and by $f_p = 6$, the same limitation occurs for Scenario 1. This issue comes from a limitation in JuPedSim. As pedestrian densities increase inside the simulation, it is possible, in rare circumstances, for the repulsive interaction between pedestrians to become so strong that an individual moves at such a high speed that its position in the next simulation loop goes over the barriers that limit the simulation area, causing the agent to appear outside the simulation area. This behavior is a common issue in both simulators and games, and stems from a simplification in the collision detection algorithm. Rather than verifying whether a pedestrian's path would intersect a wall, the code simply checks for the presence of a wall at the location the agent will be in the next simulation step. At low speeds this approach is sufficient, but it has limited applicability at higher speeds.
 
 Such high speeds are not usually possible for pedestrians in the real world, but similar situations can arise in many models, including the Social Forces Model. A common location for this to happen is near regions where pedestrians are added. In these locations, a new pedestrian may be added much closer to others than would normally be possible, creating unusually large repulsive forces. Both Vadere and \gls{ecsmos} mitigate this issue by enforcing a configurable maximum speed, set well below the threshold that could lead to such problems. Since such speeds are physically impossible in real-world scenarios, the maximum speed constraint helps to ensure the model behaves more realistically. However, JuPedSim lacks this safeguard and any means to configure it. As a result, even moderate pedestrian densities can cause failures in certain situations. While this does not occur in every simulation run, it becomes frequent enough at $f_p = 3$ and $f_p = 6$ to make it infeasible to obtain representative results.
 
 Vadere and \gls{ecsmos} exhibit an overall quadratic growth in simulation duration as $f_p$ increases. While various optimization strategies exist, this behavior is an inherent consequence of the Social Forces Model. Each pedestrian both applies forces to others and experiences reciprocal forces from them. These must be computed for every pair of agents, leading to a computation cost that grows quadratically with the number of agents in the simulation. However, at higher frequencies , a large difference in performance emerges between the two. Still, it is challenging to quantify how much of this difference is attributable to architectural design versus the underlying programming language.
-
-Comparing \gls{ecsmos} to JuPedSim is simpler when it comes to the performace of their respective programming languages, as C++ and Rust have very similar performance profiles \cite{electronics12010143}. In the proposed scenarios, both simulators have nearly identical performance at lower frequencies. This suggests that their architectures may be roughly equivalent in terms of performance. However, due to the lack of data for the later runs for JuPedSim, it is not possible to make reliable conclusions about their relative performance in more demanding scenarios.
-
 
 \begin{figure}
   \centering
@@ -829,6 +824,11 @@ Comparing \gls{ecsmos} to JuPedSim is simpler when it comes to the performace of
   \caption[Summary of performance results]{Summary of performance results}
   \label{fig:performace-results}
 \end{figure}
+
+Comparing \gls{ecsmos} to JuPedSim is simpler when it comes to the performace of their respective programming languages, as C++ and Rust have very similar performance profiles \cite{electronics12010143}. In the proposed scenarios, both simulators have nearly identical performance at lower frequencies. This suggests that their architectures may be roughly equivalent in terms of performance. However, due to the lack of data for the later runs for JuPedSim, it is not possible to make reliable conclusions about their relative performance in more demanding scenarios.
+
+
+
 
 \section{Conclusion} \label{sec:conclusion}
 
