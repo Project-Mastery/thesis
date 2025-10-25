@@ -551,32 +551,32 @@ After the use case definitions were stated, a study was conducted to implement t
       \hline
       \textnumero & Name & Description & Objective \\ 
       \hline
-      UC 1 & 
+      1 & 
       New Model &  
       Add a new simple model that uses a basic pathfinding system already implemented on the simulator& 
       Test reusability of basic simulator infrastructure\\
       \hline
-      UC 2 & 
+      2 & 
       Model \linebreak variation &  
       Create a variation of the \gls{sfm} available in the simulator with an additional attractive force that guides agents to areas where pedestrians would naturally concentrate, as defined in \cite{helbingSocialForceModel1995}& 
       Test reusability of existing model implementations when the variation is small\\
       \hline
-      UC 3 & 
+      3 & 
       Hybrid model &  
       Create a model based on an already existing one that changes how it operates under some set of circumstances, similar to models that take panic into account, like those in \cite{Alrashed_Shamma_2020} & 
       Test general adaptability of already existing models to larger changes\\
       \hline
-      UC 4 & 
+      4 & 
       Procedural \linebreak environment \linebreak changes &  
       Create a simulation environment that changes over time, adding new obstacles that change the pedestrian's paths as seen on \cite{DEIULIIS2023104527} & 
       Determine whether the simulator is able to handle updates to data that is not related to the pedestrians directly\\
       \hline
-      UC 5 & 
+      5 & 
       New \linebreak pathfinding \linebreak algorithm &  
       Add a new algorithm for determining the shortest route between a pedestrian's current location and their destination& 
       Check the flexibility of current models to changes in base infrastructure, which may be necessary for performance or other limitations \cite{kleinmeierVadereOpenSourceSimulation2019}\\
       \hline
-      UC 6 & 
+      6 & 
       Queuing \linebreak and \linebreak loitering&  
       Add procedures for pedestrians forming queues and for pedestrians staying still while waiting for something, but with some level of reactivity to the surrounding environment& 
       Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
