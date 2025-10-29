@@ -56,11 +56,11 @@ Pedestrain Dynamics, Simulation, ECS, Comparative Analysis
 
 \section*{Abstract}
 
-O estudo e a simulação do movimento de pedestres, chamado dinâmica de pedestres ou dinâmica de multidões, é de fundamental importância no mundo atual. É utilizado em diversos tipos de aplicações, incluindo a otimização de espaços por onde passam grandes quantidades de pessoas e a prevenção de esmagamentos, tumultos, debandadas e outros eventos semelhantes.
+O estudo e a simulação do movimento de pedestres, chamado dinâmica de pedestres ou dinâmica de multidões, é de fundamental importância no mundo atual. Tal área é utilizada em diversos tipos de aplicações, incluindo a otimização de espaços por onde passam grandes quantidades de pessoas e a prevenção de esmagamentos, tumultos, debandadas e outros eventos semelhantes.
 
-Atualmente, a pesquisa e o desenvolvimento de novos modelos que imitam o comportamento de pessoas andando está restrita pelas soluções disponíveis. Simuladores de pedestres existentes frequentemente possuem limitações impostas por suas arquiteturas, levando pesquisadores a criarem os seus próprios simuladores, o que desacelera a pesquisa e limita a comparabilidade dos resultados. Esta dissertação avalia a utilização da arquitetura de Sistema de Componente e Entidade para melhorar a flexibilidade desse tipo de software. Além disso, introduz um novo simulador de pedestres, o ECSMoS, que foca em resolver as limitações de flexibilidade.
+Atualmente, a pesquisa e o desenvolvimento de novos modelos que imitam o comportamento de pessoas andando está restrita pelas soluções disponíveis. Simuladores de pedestres existentes frequentemente possuem limitações impostas por suas arquiteturas, levando pesquisadores a criarem os seus próprios simuladores, o que desacelera a pesquisa e limita a comparabilidade dos resultados. Esta dissertação avalia a utilização da arquitetura de Sistema de Componente e Entidade para melhorar a flexibilidade desse tipo de software. Além disso, ela introduz um novo simulador de pedestres, o ECSMoS, que foca em resolver as limitações de flexibilidade.
 
-Para alcançar esse resultado, foi necessário, primeiramente, estudar os modelos atuais. Em seguida, realizou-se um levantamento dos simuladores disponíveis. Os pontos fortes e fracos de cada um foram avaliados para uso posterior na definição dos objetivos e dos cenários de teste do novo simulador. Depois, foi feita uma introdução à arquitetura de Sistema de Componente e Entidade e explicado como ela pode resolver as limitações de flexibilidade dos simuladores atuais. Com essas definições estabelecidas, este trabalho definiu os requisitos para o simulador ECSMoS, explicou a sua estrutura e o comparou com outros simuladores.
+Para alcançar esse resultado, foi necessário, primeiramente, estudar os modelos atuais. Em seguida, realizou-se um levantamento dos simuladores disponíveis. Os pontos fortes e fracos de cada um foram avaliados para uso posterior na definição dos objetivos e dos cenários de teste do novo simulador. Posteriormente, foi feita uma introdução à arquitetura de Sistema de Componente e Entidade e explicado como ela pode resolver as limitações de flexibilidade dos simuladores atuais. Com essas definições estabelecidas, este trabalho definiu os requisitos para o simulador ECSMoS, explicou a sua estrutura e o comparou com outros simuladores.
 
 Os resultados mostram que, embora mais complexo do que os outros simuladores, o ECSMoS é consideravelmente mais flexível, especialmente em situações onde o ambiente está em constante mudança. Em termos de desempenho, foi demonstrado que o ECSMoS tem desempenho tão bom quanto ou ainda melhor do que os outros simuladores nos cenários avaliados.
 
@@ -105,6 +105,17 @@ Dinâmica de pedestres, Simulação, ECS, Estudo Comparativo
     [hang]
     {\newpage\bfseries\Large\arial}
     {\thesection.}{10pt}{}
+
+
+\pretocmd{\section}{%
+  \clearpage
+  \ifodd\value{page}\else
+    \thispagestyle{empty}%
+    \hbox{}%
+    \newpage
+  \fi
+}{}{}
+
 
 \section{Introduction}
 
@@ -217,7 +228,7 @@ In practical terms, the repulsive force has two main components: a normal and a 
 \begin{figure}[h]
   \centering
   \includesvg{repulsive_forces.drawio.svg}
-  \caption{Diagram of repulsive forces between pedestrians $i$ and $j$}
+  \caption[Diagram of repulsive forces between pedestrians $i$ and $j$]{Diagram of repulsive forces between pedestrians $i$ and $j$.}
   \label{fig:repulsive-forces}
 \end{figure}
 
@@ -247,7 +258,7 @@ where:
 \begin{figure}[h]
   \centering
   \includesvg{obstacle_forces.drawio.svg}
-  \caption{Diagram of obstacle forces between pedestrian $i$ and obstacle $o$}
+  \caption[Diagram of obstacle forces between pedestrian $i$ and obstacle $o$]{Diagram of obstacle forces between pedestrian $i$ and obstacle $o$.}
   \label{fig:obstacle-forces}
 \end{figure}
 
@@ -290,7 +301,7 @@ After examining the fundamental principles and forces that govern pedestrian beh
 
 To determine which simulators were most used and relevant to this work, a survey was performed. \autoref{sec:survey-criteria} defines the parameters of the survey. \autoref{sec:frameworks} lists the frameworks and simulators that fit into the described criteria. Finally, \autoref{sec:framework-comparison} evaluates them.
 
-\subsubsection{Survey Criteria} \label{sec:survey-criteria}
+\subsubsection{Survey criteria} \label{sec:survey-criteria}
 
  The following scientific article databases were searched: Google Scholar, IEEE Xplore, arXiv, SpringerLink, Science Direct and the Association for Computing Machinery Digital Library. For the search, the terms "pedestrian simulation", "pedestrian model", "pedestrian traffic", "pedestrian dynamics", "crow simulation", "crowd dynamics", "pedestrian motion", "crowd motion", "pedestrian movement", and "crowd movement" were used.
 The results were then filtered by date, removing anything prior to 2010. Finally, the top 50 results from each were evaluated.
@@ -326,7 +337,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 \begin{figure}[h]
   \centering
   \includesvg[inkscapelatex=false]{vadere_architecture.drawio.svg}
-  \caption[Vadere architecture]{Vadere architecture. Adapted from \cite{seitzSuperpositionPrincipleConceptual2016}}
+  \caption[Vadere architecture]{Vadere architecture. Adapted from \cite{seitzSuperpositionPrincipleConceptual2016}.}
   \label{fig:vadere_architecture}
 \end{figure}
 
@@ -343,6 +354,7 @@ These were the simulation frameworks that passed all the filtering criteria:
 
 \begin{center}
   \begin{table}[h!]
+    \caption[Summary of available simulators]{Summary of available simulators.}
     \begin{tabularx}{\textwidth}{ | X | c | c | c | c | c | } 
       \hline
       Name & Languages & Has \gls{ui} & License & Last Update & Project Status \\ 
@@ -363,9 +375,7 @@ These were the simulation frameworks that passed all the filtering criteria:
       \hline 
       Vadere & Java & Yes & LGPL-3.0 & 2025 & Supported \\
       \hline 
-
     \end{tabularx}
-    \caption{Summary of available simulators}
     \label{table:available-simulators-summary}
   \end{table}
 \end{center}
@@ -415,7 +425,7 @@ While all \gls{ecs} implementations have the same basic structure, one of the ma
 
 \textbf{Archetypes}: Implementations that rely on archetypes group entities based on the components they have. Each combination is called an archetype and is stored in a contiguous area of memory, often as a struct of arrays, meaning that they have great cache spatial locality. When a system requires data, the framework checks which archetypes conform to the requirements and provides the data. This strategy has the best iteration performance of the discussed implementations. However, adding or removing components from an entity forces it to move all the data related to that entity to another archetype. This reduces the efficiency of such operations. Examples that mainly use this approach include Flecs \cite{flecs}, Unity DOTS \cite{unityDots}, Bevy ECS \cite{bevy}, Legion \cite{legion} and Hecs \cite{hecs}. For a visual example, see \autoref{fig:ecs_archetype_example}.
 
-\begin{figure}
+\begin{figure}[h!]
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{archetype_based_ecs.drawio.svg}
   \caption[Example of how archetype-based ECS stores components]{Example of how archetype-based ECS stores components.}
@@ -436,7 +446,7 @@ In addition, the fact that systems are independent allows for a certain level of
 
 Internal parallelism can occur when it is possible to process each entry independently of each other. In this case, a system can split the data it has received into multiple groups that can be processed in parallel. These two modes of parallelism can also work together. In this situation, systems can be executed in parallel and systems can split their data into different parallel processes. \autoref{fig:external_vs_internal_parallelism} shows an example of these approaches.
 
-\begin{figure}
+\begin{figure}[b!]
   \centering
   \includesvg[inkscapelatex=false,width=\textwidth]{internal_vs_external_parallelism.drawio.svg}
   \caption[External and internal parallelism comparison]{Example of how internal and external parallelism work and how they operate when combined.}
@@ -469,17 +479,17 @@ To improve organization and effectively provide a division of concerns, \gls{ecs
 Bellow is a list of the currently available modules and their general function:
 
 \begin{itemize}
-  \item Default module: Enables basic internal Bevy modules useful for the general simulation framework
-  \item Auto End Simulation module: Adds functionality for automatically stopping a simulation under certain conditions, such as when there are no more pedestrians or when a certain amount of time has passed
-  \item Display module: Enables the \gls{ui} of the simulator
-  \item Flow Field Pathfinding module: Used to compute the best paths for pedestrians at any given point to their destination. The data provided by this module is later used by the Social Forces module to compute the direction of the motivation force. This module is heavily inspired by the floor fields used on Vadere for the same purpose.
-  \item Kinematics module: Handles basic movement according to the laws of physics. While other modules may handle the computation of forces, this module actually moves pedestrians according to their final speed.
-  \item Movement Tracking module: Used for collecting and exporting data related to the movement of pedestrians in the simulation.
-  \item Simple Objective module: Used for determining if a pedestrian has arrived at its destination (called an objective inside the simulation) and what actions should be taken next, most commonly removing it from the simulation.
-  \item Simulation Area Module: Used for defining the region where the simulation takes place. Pedestrians that attempt to leave the simulation area are prevented from leaving. The information provided by this system is also useful for flow field pathfinding, which uses it to limit the paths it needs to compute.
-  \item Social Forces Module: Implements the social forces model for simulating pedestrians.
-  \item Spawner Module: Used for creating pedestrians at defined regions at a certain frequency, providing a constant flow of agents in the simulation.
-  \item Start Time Module: Simply records the time at which the simulation started. This information is used during the export for naming and differentiating various simulation runs.
+  \item \textbf{Default module}: Enables basic internal Bevy modules useful for the general simulation framework
+  \item \textbf{Auto End Simulation module}: Adds functionality for automatically stopping a simulation under certain conditions, such as when there are no more pedestrians or when a certain amount of time has passed
+  \item \textbf{Display module}: Enables the \gls{ui} of the simulator
+  \item \textbf{Flow Field Pathfinding module}: Used to compute the best paths for pedestrians at any given point to their destination. The data provided by this module is later used by the Social Forces module to compute the direction of the motivation force. This module is heavily inspired by the floor fields used on Vadere for the same purpose.
+  \item \textbf{Kinematics module}: Handles basic movement according to the laws of physics. While other modules may handle the computation of forces, this module actually moves pedestrians according to their final speed.
+  \item \textbf{Movement Tracking module}: Used for collecting and exporting data related to the movement of pedestrians in the simulation.
+  \item \textbf{Simple Objective module}: Used for determining if a pedestrian has arrived at its destination (called an objective inside the simulation) and what actions should be taken next, most commonly removing it from the simulation.
+  \item \textbf{Simulation Area Module}: Used for defining the region where the simulation takes place. Pedestrians that attempt to leave the simulation area are prevented from leaving. The information provided by this system is also useful for flow field pathfinding, which uses it to limit the paths it needs to compute.
+  \item \textbf{Social Forces Module}: Implements the social forces model for simulating pedestrians.
+  \item \textbf{Spawner Module}: Used for creating pedestrians at defined regions at a certain frequency, providing a constant flow of agents in the simulation.
+  \item \textbf{Start Time Module}: Simply records the time at which the simulation started. This information is used during the export for naming and differentiating various simulation runs.
 \end{itemize}
 
 \autoref{fig:module_dependency} shows an example of how inter-module dependencies and system sets operate. It is important to note that it does not show all systems and the general flow has been simplified for better understanding. The image shows two modules, their systems, system sets, and how they interact. The rounded boxes represent predefined system sets and the arrows between the systems and system sets represent their dependencies. Systems without a dependency, such as \verb|Compute Obstacle Collision Map| can start execution as soon as possible and, in this example, can also be executed in parallel. Bevy executes systems in parallel in no particular order and it can be changed from iteration to iteration. The height of each system denotes the period of time when it can be executed. As shown, \verb|Compute Motivation Force| depends on the Flow Field Pathfinding module's system set, meaning that it will only be executed after it has finished, unlike the other social forces systems.
@@ -487,7 +497,7 @@ Bellow is a list of the currently available modules and their general function:
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{module_dependency.drawio.png}
-  \caption[Example of how ECSMoS handles inter-module dependencies]{Example of how \gls{ecsmos} handles inter-module dependencies}
+  \caption[Example of how ECSMoS handles inter-module dependencies]{Example of how \gls{ecsmos} handles inter-module dependencies.}
   \label{fig:module_dependency}
 \end{figure}
 
@@ -518,16 +528,16 @@ Finally, \gls{ecsmos} does not currently have a proper external file format for 
   \begin{subfigure}{.5\textwidth}
     \centering
     \includegraphics[width=.9\linewidth]{simulator_working.png}
-    \caption{General \gls{ecsmos} \gls{ui}}
+    \caption[General \gls{ecsmos} \gls{ui}]{General \gls{ecsmos} \gls{ui}.}
     \label{fig:general_ui}
   \end{subfigure}%
   \begin{subfigure}{.5\textwidth}
     \centering
     \includegraphics[width=.9\linewidth]{vector_field.png}
-    \caption{Vector field \gls{ui}}
+    \caption[Vector field \gls{ui}]{Vector field \gls{ui}.}
     \label{fig:vector_field}
   \end{subfigure}%
-  \caption{\gls{ecsmos}} interface
+  \caption[\gls{ecsmos} interface]{\gls{ecsmos} interface.} 
   \label{fig:simulator_ui}
 \end{figure}
 
@@ -554,6 +564,7 @@ After the use case definitions were stated, a study was conducted to implement t
 
 \begin{center}
   \begin{table}[h!]
+    \caption[List and description of use cases]{List and description of use cases.}
     \begin{tabularx}{\textwidth}{ | l | p{2.3cm}| X | p{5cm} | } 
       \hline
       \textnumero & Name & Description & Objective \\ 
@@ -589,13 +600,13 @@ After the use case definitions were stated, a study was conducted to implement t
       Queuing and loitering are behaviors that significantly change how a pedestrian moves and interacts with its environment. They also break many assumptions that are usually made by models, which often require continuous movement \cite{KIM2013232}\\
       \hline
     \end{tabularx}
-    \caption{List and description of use cases}
     \label{table:test-scenarios}
   \end{table}
 \end{center}
 
 \begin{center}
   \begin{table}[h!]
+    \caption[Description of evaluation criteria and their levels]{Description of evaluation criteria and their levels.}
     \begin{tabularx}{\textwidth}{ | p{2.9cm} | l | X | } 
       \hline
       Criteria & Grade & Description \\ 
@@ -639,7 +650,6 @@ After the use case definitions were stated, a study was conducted to implement t
       \\ 
       \hline
     \end{tabularx}
-    \caption{Description of evaluation criteria and their levels}
     \label{table:qualitative-evaluation-criteria}
   \end{table}
 \end{center}
@@ -657,16 +667,16 @@ Two scenarios were developed for this evaluation. \autoref{fig:performace_scenar
   \begin{subfigure}{.33\textwidth}
     \centering
     \includesvg[width=.9\linewidth]{performance_scenario_1.svg}
-    \caption{Scenario 1 -  Bottleneck}
+    \caption[Scenario 1 -  Bottleneck]{Scenario 1 -  Bottleneck.}
     \label{fig:sfig1}
   \end{subfigure}%
   \begin{subfigure}{.67\textwidth}
     \centering
     \includesvg[width=.88\linewidth]{performance_scenario_2.svg}
-    \caption{Scenario 2 - Corridor}
+    \caption[Scenario 2 - Corridor]{Scenario 2 - Corridor.}
     \label{fig:sfig1}
   \end{subfigure}%
-  \caption{Performance scenario topologies}
+  \caption[Performance scenario topologies]{Performance scenario topologies.}
   \label{fig:performace_scenario_topologies}
 \end{figure}
 
@@ -679,6 +689,7 @@ The dependent variable being measured during these tests was the total execution
 All experiments use the Social Forces Model, with simulator constants standardized as shown in \autoref{table:sfm-constantns}. These include the calibration constants from \autoref{eq:pedestrian_repulsion}, \autoref{eq:pedestrian_obstacle}, and \autoref{eq:pedestrian_final_speed}. Since the algorithms used to compute the shortest path from a pedestrian to its destination, a key component of the motivation force, are substantially different and incompatible, their values were left at their default settings. The total amount of time simulated, denoted as $T_s$, was standardized to a value of 5 minutes, meaning that each run would simulate the equivalent of 5 minutes and then stop. This duration was chosen because it allows low and medium $f_p$ values to reach equilibrium, where the inflow and outflow of pedestrians are balanced, while preventing higher $f_p$ values from completely saturating the simulation area. Simulations were executed on standardized hardware, with key specifications listed in \autoref{table:pc-specs}.
 
 \begin{table}[h]
+  \caption[Controlled variables for the performance evaluation]{Controlled variables for the performance evaluation.}
   \begin{center}
     \begin{tabular}{ | l | c | c | } 
       \hline
@@ -705,13 +716,13 @@ All experiments use the Social Forces Model, with simulator constants standardiz
       $T_s$ & 5 & $min$\\
       \hline 
     \end{tabular}
-    \caption{Controlled variables for the performance evaluation}
     \label{table:sfm-constantns}
   \end{center}
 \end{table}
 
 \begin{table}[h]
   \begin{center}
+    \caption[Simulation hardware and software]{Simulation hardware and software.}
     \begin{tabular}{ | l | c | } 
       \hline
       Property & Value \\ 
@@ -727,7 +738,6 @@ All experiments use the Social Forces Model, with simulator constants standardiz
       RAM & 12 GB \\
       \hline
     \end{tabular}
-    \caption{Simulation hardware and software}
     \label{table:pc-specs}
   \end{center}
 \end{table}
@@ -739,6 +749,7 @@ Following the directives outlined in \autoref{sec:qualitative-evaluation}, each 
 
 \begin{center}
   \begin{table}
+    \caption[Summary of qualitative results]{Summary of qualitative results.}
     \begin{tabularx}{\textwidth}{ | p{3.7cm} | X | X | X | X | X | X | X | X | X | } 
       \hline
       \backslashbox{Use Case}{Simulator} & 
@@ -792,7 +803,6 @@ Following the directives outlined in \autoref{sec:qualitative-evaluation}, each 
       Good & Good & Good \\
       \hline
     \end{tabularx}
-    \caption[Summary of qualitative results]{Summary of qualitative results.}
     \label{table:qualitative-summary}
   \end{table}
 \end{center}
@@ -828,7 +838,7 @@ Vadere and \gls{ecsmos} exhibit an overall quadratic growth in simulation durati
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{performace_result.png}
-  \caption[Summary of performance results]{Summary of performance results}
+  \caption[Summary of performance results]{Summary of performance results.}
   \label{fig:performace-results}
 \end{figure}
 
