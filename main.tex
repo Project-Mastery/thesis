@@ -12,49 +12,27 @@
 
 \noindent Presidente do júri
 
-Grau académico, nome do presidente do júri
+Doutor José Carlos Meireles Monteiro Metrolho, Professor Coordenador da UTC de Informática da Escola Superior de Tecnologia do Instituto Politécnico de Castelo Branco
+
+\vspace{0.5cm}
 
 \noindent Vogais
 
-Grau académico, nome do presidente do júri
-
-Categoria profissional e o nome da Instituição
+Doutor Tiago Miguel Carrola Simões, Professor Auxiliar do Departamento de Informática da Faculdade de Engenharia, Universidade da Beira Interior (Arguente)
 
 \vspace{1cm}
 
-Grau académico, nome do presidente do júri
-
-Categoria profissional e o nome da Instituição
+Doutor Nuno Moreira da Silva, Professor Adjunto, UTC de Informática, Escola Superior de Tecnologia do Instituto Politécnico de Castelo Branco (Arguente)
 
 \vspace{1cm}
 
-Grau académico, nome do presidente do júri
-
-Categoria profissional e o nome da Instituição
+Doutor Alexandre José Pereira Duro da Fonte, Professor Adjunto, UTC de Informática, Escola Superior de Tecnologia do Instituto Politécnico de Castelo Branco (Orientador)
 
 \clearpage            % Ensure all floats and content are flushed
 \null                % Create an empty box (no content)
 \newpage             % Move to the next page
 
 \section*{Resumo}
-
-The study and simulation of the movement of pedestrians, often referred to as pedestrian dynamics or crowd dynamics, is of fundamental importance in today's world. It is used in many kinds of applications, including the optimization of spaces where large amounts of people pass through and the prevention of crowd crushes, stampedes, tramplings, and other similar events.
-
-Currently, the research and development of new models that mimic the behavior of people walking is restricted by the available solutions. Existing pedestrian simulators oftentimes have limitations imposed by their architectures, leading researchers to create their own simulators, which slows down research and limits comparability of results. This dissertation evaluates the utilization of the Entity Component Systems architecture to improve the flexibility of such software. Additionally, it introduces a new pedestrian simulation framework, ECSMoS, which focuses on solving the flexibility limitations.
-
-To arrive at this result, first it was necessary to study current models. Then, a survey of the available simulators was performed. The strengths and weaknesses of each were noted for later use in the definition of the objectives and testing scenarios of the new simulator. Then, an introduction to the Entity Component Systems Architecture was given and how it may solve the flexibility limitations of current simulators was explained. With these definitions in place, this work defined the requirements for the ECSMoS simulator, explained its structure and compared it to other simulators. 
-
-Results show that, while more complex than the other simulators, ECSMoS is considerably more flexible, especially in situations where the environment is in constant flux. In terms of performance, it was shown that ECSMoS is just as or more performant than other simulators in the evaluated scenarios. 
-
-\section*{Palavras chave}
-
-Pedestrain Dynamics, Simulation, ECS, Comparative Analysis
-
-\clearpage            % Ensure all floats and content are flushed
-\null                % Create an empty box (no content)
-\newpage             % Move to the next page
-
-\section*{Abstract}
 
 O estudo e a simulação do movimento de pedestres, chamado dinâmica de pedestres ou dinâmica de multidões, é de fundamental importância no mundo atual. Tal área é utilizada em diversos tipos de aplicações, incluindo a otimização de espaços por onde passam grandes quantidades de pessoas e a prevenção de esmagamentos, tumultos, debandadas e outros eventos semelhantes.
 
@@ -64,9 +42,28 @@ Para alcançar esse resultado, foi necessário, primeiramente, estudar os modelo
 
 Os resultados mostram que, embora mais complexo do que os outros simuladores, o ECSMoS é consideravelmente mais flexível, especialmente em situações onde o ambiente está em constante mudança. Em termos de desempenho, foi demonstrado que o ECSMoS tem desempenho tão bom quanto ou ainda melhor do que os outros simuladores nos cenários avaliados.
 
-\section*{Keywords}
+\section*{Palavras chave}
 
 Dinâmica de pedestres, Simulação, ECS, Estudo Comparativo
+
+\clearpage            % Ensure all floats and content are flushed
+\null                % Create an empty box (no content)
+\newpage             % Move to the next page
+
+\section*{Abstract}
+
+The study and simulation of the movement of pedestrians, often referred to as pedestrian dynamics or crowd dynamics, is of fundamental importance in today's world. It is used in many kinds of applications, including the optimization of spaces where large amounts of people pass through and the prevention of crowd crushes, stampedes, tramplings, and other similar events.
+
+Currently, the research and development of new models that mimic the behavior of people walking is restricted by the available solutions. Existing pedestrian simulators oftentimes have limitations imposed by their architectures, leading researchers to create their own simulators, which slows down research and limits comparability of results. This dissertation evaluates the utilization of the Entity Component Systems architecture to improve the flexibility of such software. Additionally, it introduces a new pedestrian simulation framework, ECSMoS, which focuses on solving the flexibility limitations.
+
+To arrive at this result, first it was necessary to study current models. Then, a survey of the available simulators was performed. The strengths and weaknesses of each were noted for later use in the definition of the objectives and testing scenarios of the new simulator. Then, an introduction to the Entity Component Systems Architecture was given and how it may solve the flexibility limitations of current simulators was explained. With these definitions in place, this work defined the requirements for the ECSMoS simulator, explained its structure and compared it to other simulators. 
+
+Results show that, while more complex than the other simulators, ECSMoS is considerably more flexible, especially in situations where the environment is in constant flux. In terms of performance, it was shown that ECSMoS is just as or more performant than other simulators in the evaluated scenarios. 
+
+
+\section*{Keywords}
+
+Pedestrain Dynamics, Simulation, ECS, Comparative Analysis
 
 \clearpage            % Ensure all floats and content are flushed
 \null                % Create an empty box (no content)
@@ -820,7 +817,7 @@ Use Case 5 causes a reversal in the grades between Vadere and JuPedSim. Vadere's
 Finally, in Use Case 6, JuPedSim performs very well. Its architecture is specifically designed to accommodate this type of behavior, making it both well-integrated and highly flexible. Although \gls{ecsmos} was not explicitly designed for this use case, similar functionality can be achieved using the same approach as in Use Case 3 for hybrid models, where queuing and loitering are implemented as extensions on top of the already available model. In theory, Vadere could adopt a similar approach to \gls{ecsmos}, but in practice, this would require rewriting the entire model to account for these behaviors due to inherent limitations in its extensibility. Therefore, Vadere receives a lower score in the reusability criteria.
 
 
-As the results in \autoref{table:qualitative-summary} show, Vadere and \gls{ecsmos} are the best for basic use cases, with Vadere holding a slight advantage. Each one has its strong and weak points, but both are generally suitable for implementing a novel pedestrian model that does not involve complex dynamics, such as environmental changes. However, when use cases require more sophisticated modifications, \gls{ecsmos} demonstrates a clear advantage due to its superior flexibility. In comparison, JuPedSim generally yields worse results across the use cases, with its only standout result in Use Case
+As the results in \autoref{table:qualitative-summary} show, Vadere and \gls{ecsmos} are the best for basic use cases, with Vadere holding a slight advantage. Each one has its strong and weak points, but both are generally suitable for implementing a novel pedestrian model that does not involve complex dynamics, such as environmental changes. However, when use cases require more sophisticated modifications, \gls{ecsmos} demonstrates a clear advantage due to its superior flexibility. In comparison, JuPedSim generally yields worse results across the use cases, with its only standout result in Use Case 6.
 
 
 \subsection{Performance evaluation results}
@@ -829,7 +826,7 @@ Similarly to the qualitative results, the performance results were very close fo
 
 As can be observed, the performance across simulators and scenarios is very similar for lower values of $f_p$. With such low pedestrian densities, the base costs of loading data into memory, pre-processing, and post-processing dominate the overall runtime. Some variation remains, most notably from Vadere, which is written in Java and therefore exhibits comparatively slower performance, as Java is not fully compiled but instead partially compiled into an intermediate language that must be interpreted at runtime. JuPedSim, which uses Python, an interpreted language, has higher performance because the core computations are implemented in C++. Python is mostly used as a wrapper for a convenient interface that delegates execution directly to the C++ layer.
 
-Starting at $f_p = 3$, no data is available for JuPedSim in Scenario 2, and by $f_p = 6$, the same limitation occurs for Scenario 1. This issue comes from a limitation in JuPedSim. As pedestrian densities increase inside the simulation, it is possible for the repulsive interaction between pedestrians to become too strong in certain circumstances. These strong forces can cause an individual to move at such a high speed that its position in the next simulation loop goes over the barriers that limit the simulation area, causing the agent to appear outside the simulation area. This behavior is a common issue in both simulators and games, and stems from a simplification in the collision detection algorithm. Rather than verifying whether a pedestrian's path would intersect a wall, the code simply checks for the presence of a wall at the location the agent will be in the next simulation step. At low speeds this approach is sufficient, but it has limited applicability at higher speeds.
+Starting at $f_p = 2$, no data is available for JuPedSim in Scenario 2, and by $f_p = 4$, the same limitation occurs for Scenario 1. This issue comes from a limitation in JuPedSim. As pedestrian densities increase inside the simulation, it is possible for the repulsive interaction between pedestrians to become too strong in certain circumstances. These strong forces can cause an individual to move at such a high speed that its position in the next simulation loop goes over the barriers that limit the simulation area, causing the agent to appear outside the simulation area. This behavior is a common issue in both simulators and games, and stems from a simplification in the collision detection algorithm. Rather than verifying whether a pedestrian's path would intersect a wall, the code simply checks for the presence of a wall at the location the agent will be in the next simulation step. At low speeds this approach is sufficient, but it has limited applicability at higher speeds.
 
 Such high speeds are not usually possible for pedestrians in the real world, but similar situations can arise in many models, including the Social Forces Model. A common location for this to happen is near regions where pedestrians are added. In these locations, a new pedestrian may be added much closer to others than would normally be possible, creating unusually large repulsive forces. Both Vadere and \gls{ecsmos} mitigate this issue by enforcing a configurable maximum speed, set well below the threshold that could lead to such problems. Since such speeds are physically impossible in real-world scenarios, the maximum speed constraint helps to ensure the model behaves more realistically. However, JuPedSim lacks this safeguard and any means to configure it. As a result, even moderate pedestrian densities can cause failures in certain situations. While this does not occur in every simulation run, it becomes frequent enough at $f_p = 3$ and $f_p = 6$ to make it infeasible to obtain representative results.
 
